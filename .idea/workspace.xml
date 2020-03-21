@@ -2,16 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb167df5-08f4-4257-92af-6b7d8cbec68d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/crowdFunding/projects/templates/projects/base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/crowdFunding/users/templates/users/base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/crowdFunding/users/templates/users/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Crowd-Funding.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Crowd-Funding.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crowdFunding/crowdFunding/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/crowdFunding/crowdFunding/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crowdFunding/users/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/crowdFunding/users/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crowdFunding/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/crowdFunding/users/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crowdFunding/users/templates/users/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crowdFunding/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/crowdFunding/users/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +39,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="5b58d1fa-0f60-4ab4-a346-ace548d90aa9" name="Default Changelist" comment="" />
+      <changelist id="cb167df5-08f4-4257-92af-6b7d8cbec68d" name="Default Changelist" comment="" />
       <created>1584734911531</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
