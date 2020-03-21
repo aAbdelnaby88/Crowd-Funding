@@ -2,11 +2,32 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b58d1fa-0f60-4ab4-a346-ace548d90aa9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crowdFunding/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crowdFunding/.idea/crowdFunding.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crowdFunding/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crowdFunding/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crowdFunding/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crowdFunding/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crowdFunding/media/images/users/img1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crowdFunding/media/images/users/img1_Vb5NXY5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crowdFunding/media/images/users/img2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crowdFunding/media/images/users/img2_BNBsDpY.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crowdFunding/media/images/users/img2_BNBsDpY_FOXQ5K5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crowdFunding/projects/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crowdFunding/users/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crowdFunding/users/templates/users/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Crowd-Funding.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Crowd-Funding.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crowdFunding/crowdFunding/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/crowdFunding/crowdFunding/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crowdFunding/projects/templates/projects/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/crowdFunding/projects/templates/projects/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crowdFunding/users/templates/users/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/crowdFunding/users/templates/users/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crowdFunding/users/templates/users/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/crowdFunding/users/templates/users/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crowdFunding/crowdFunding/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/crowdFunding/crowdFunding/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crowdFunding/db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/crowdFunding/projects/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/crowdFunding/projects/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crowdFunding/projects/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/crowdFunding/projects/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crowdFunding/users/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/crowdFunding/users/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crowdFunding/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/crowdFunding/users/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crowdFunding/users/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/crowdFunding/users/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crowdFunding/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/crowdFunding/users/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirments.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirments.txt" afterDir="false" />
