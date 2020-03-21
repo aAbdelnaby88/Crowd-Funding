@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Crowd-Funding.iml" filepath="$PROJECT_DIR$/.idea/Crowd-Funding.iml" />
+<<<<<<< HEAD
+=======
+      <module fileurl="file://$PROJECT_DIR$/../python-project/.idea/python-project.iml" filepath="$PROJECT_DIR$/../python-project/.idea/python-project.iml" />
+>>>>>>> fdb86578424546aa969a05f5a73be29701e068a0
+    </modules>
+  </component>
+</project>

@@ -17,7 +17,7 @@ class Project(models.Model):
     is_featured = models.BooleanField(default=False)
 
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
     tags = models.ManyToManyField("Tag")
 
 
@@ -37,16 +37,16 @@ class Tag(models.Model):
 class Comment(models.Model):
     content = models.TextField(max_length=3000)
     project = models.ForeignKey("Project", on_delete=models.CASCADE)
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
 
 
 class ProjectReport(models.Model):
     content = models.TextField(max_length=3000)
     project = models.ForeignKey("Project", on_delete=models.CASCADE)
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
 
 
 class CommentReport(models.Model):
     content = models.TextField(max_length=3000)
     comment = models.ForeignKey("Comment", on_delete=models.CASCADE)
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
