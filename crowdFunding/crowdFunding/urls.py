@@ -18,11 +18,6 @@ from django.contrib import admin
 from django.conf.urls import include
 
 urlpatterns = [
-<<<<<<< HEAD
     path('admin/', admin.site.urls),
     path('profile/' , include('users.urls'))
-=======
-    url(r'^admin/', admin.site.urls),
-    url('users/', include('users.urls')),
->>>>>>> fdb86578424546aa969a05f5a73be29701e068a0
 ]
