@@ -3,9 +3,6 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 
-
-# def __str__(self):
-#     return self.phone
 # Create your models here.
 class Users(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -18,3 +15,5 @@ class Users(models.Model):
     birth_date = models.DateField(null=True, blank=True)
 
     #
+    # def __str__(self):
+    #     return self.phone
