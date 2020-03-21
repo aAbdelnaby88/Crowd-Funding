@@ -20,18 +20,30 @@ class Project(models.Model):
     user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
     tags = models.ManyToManyField("Tag")
 
+    def __str__(self):
+        return str(self.title)
+
 
 class Category(models.Model):
     name = models.TextField(max_length=45)
 
+    def __str__(self):
+        return str(self.name)
+
 
 class ProjectPicture(models.Model):
     img_url = models.URLField()
-    Project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.project.name + " - "+self.img_url)
 
 
 class Tag(models.Model):
     name = models.TextField(max_length=45)
+
+    def __str__(self):
+        return str(self.name)
 
 
 class Comment(models.Model):
