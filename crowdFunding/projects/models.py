@@ -50,3 +50,9 @@ class CommentReport(models.Model):
     content = models.TextField(max_length=3000)
     comment = models.ForeignKey("Comment", on_delete=models.CASCADE)
     user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
+
+
+class Donation(models.Model):
+    amount = models.IntegerField()
+    project = models.ForeignKey("Project", on_delete=models.CASCADE)
+    user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
