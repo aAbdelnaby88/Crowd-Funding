@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
 from django.db import models
-
+from PIL import Image
 # Create your models here.
 class Profile(models.Model):
     user_name = models.ForeignKey(User, on_delete=models.CASCADE , verbose_name=("User Name"))
@@ -19,14 +19,15 @@ class Profile(models.Model):
     def __str__(self):
         return str(self.user_name)
 
+
     def remove_image_update(self):
         pass
 
     def delete(self, *args, **kwargs):
         pass
 
-    def save(self, *args, **kwargs):
-        pass
+    # def save(self, *args, **kwargs):
+    #     pass
 
     def update_user_profile(sender, instance, created, **kwargs):
         pass
