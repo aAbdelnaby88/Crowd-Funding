@@ -25,8 +25,5 @@ class Profile(models.Model):
     def delete(self, *args, **kwargs):
         pass
 
-    def save(self, *args, **kwargs):
-        pass
-
     def update_user_profile(sender, instance, created, **kwargs):
         pass

@@ -15,10 +15,11 @@
             {{ form.end_date|as_crispy_field }}
             {{ form.category|as_crispy_field }}        
             {{ form.tags|as_crispy_field }}
+            {% comment %} {{ form.img_url|as_crispy_field }} {% endcomment %}
+            
         </div>
       </div>
     </div>
-    
     <br>
     <button type="submit" class="btn btn-success">Create Project</button>
   </form>
