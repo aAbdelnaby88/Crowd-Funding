@@ -15,9 +15,8 @@ class Project(models.Model):
     rate = models.DecimalField(max_digits=2, decimal_places=2, default=0)
     rates_count = models.IntegerField(default=0)
     is_featured = models.BooleanField(default=False)
-
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
-    #user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
+    user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
     tags = models.ManyToManyField("Tag")
 
     def __str__(self):
