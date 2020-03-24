@@ -6,5 +6,6 @@ def userProfile(request):
     return render(request,"users/profile.html")
 
 def index(request):
-    return render(request,"users/login.html")
+    return render(request,"users/test.html")
+
 
