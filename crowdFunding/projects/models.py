@@ -32,11 +32,11 @@ class Category(models.Model):
 
 
 class ProjectPicture(models.Model):
-    img_url = models.URLField()
+    img_url = models.ImageField(upload_to='imgs/')
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.project.name + " - "+self.img_url)
+        return str(self.project.title)
 
 
 class Tag(models.Model):
