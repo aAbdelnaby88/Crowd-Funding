@@ -31,7 +31,7 @@ class Category(models.Model):
 
 
 class ProjectPicture(models.Model):
-    img_url = models.ImageField(upload_to='imgs/')
+    img_url = models.ImageField(upload_to='static/imgs/')
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     def __str__(self):
