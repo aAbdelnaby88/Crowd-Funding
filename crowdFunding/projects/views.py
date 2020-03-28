@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
-from .models import *
-from django.shortcuts import render, redirect
-from .forms import ProjectsForm
+# from __future__ import 
+# from .models import *
+from django.shortcuts import render
+from .forms import ProjectsForm , ImageForm
 from django.http.response import HttpResponse
 from users.models import Profile
 from django.contrib.auth.models import User
+from django.forms import modelformset_factory
+from .models import ProjectPicture , Project
+from django.contrib import messages
+
 # Create your views here.
 
 
@@ -15,21 +20,34 @@ def showProject(request, id):
                'pPics': pPics}
     return render(request, "projects/viewProject.html", context)
 
-
 def create(request):
-    if request.method == 'POST':
-        form = ProjectsForm(request.POST, request.FILES)
-        if form.is_valid():
+
+    ImageFormSet = modelformset_factory(ProjectPicture,form=ImageForm , extra=1 )
+                                        
+    if request.method == 'POST' :
+        form = ProjectsForm(request.POST)
+        formset = ImageFormSet(request.POST, request.FILES)
+
+        if form.is_valid() and formset.is_valid():
             new_form = form.save(commit=False)
-            new_form.user = request.user.profile
+            new_form.user = Profile.objects.get(user_name=request.user)
             new_form.save()
+            for form in formset.cleaned_data:
+                #this helps to not crash if the user   
+                #do not upload all the photos
+                if form:
+                    image = form['img_url']
+                    photo = ProjectPicture(project=new_form, img_url=image)
+                    photo.save()
             return HttpResponse("Done ya boy")
         return HttpResponse("msh Done ya boy")
     else:
 
         form = ProjectsForm()
+        formset = ImageFormSet()
         context = {
-            'form': form,
+            'form' : form ,
+            'formset' : formset ,
         }
     return render(request, 'projects/create.html', context)
 

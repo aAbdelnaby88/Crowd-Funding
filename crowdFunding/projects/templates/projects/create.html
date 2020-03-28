@@ -15,8 +15,13 @@
             {{ form.end_date|as_crispy_field }}
             {{ form.category|as_crispy_field }}        
             {{ form.tags|as_crispy_field }}
-            {% comment %} {{ form.img_url|as_crispy_field }} {% endcomment %}
-            
+        </div>
+        <div class="col-8">
+          {% comment %} {{ formset.as_p }} {% endcomment %}
+          {{ formset.management_form }}
+          {% for form in formset %}
+              {{ formset }}
+          {% endfor %}
         </div>
       </div>
     </div>
