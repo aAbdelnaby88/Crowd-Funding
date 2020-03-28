@@ -7,12 +7,12 @@ from users.models import Profile
 
 
 class Project(models.Model):
-    title = models.TextField(max_length=45)
+    title = models.CharField(max_length=45)
     details = models.TextField(max_length=3000)
     target = models.IntegerField()
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)
-    rate = models.DecimalField(max_digits=2, decimal_places=2, default=0)
+    rate = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     rates_count = models.IntegerField(default=0)
     is_featured = models.BooleanField(default=False)
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
@@ -24,7 +24,7 @@ class Project(models.Model):
 
 
 class Category(models.Model):
-    name = models.TextField(max_length=45)
+    name = models.CharField(max_length=45)
 
     def __str__(self):
         return str(self.name)
@@ -39,16 +39,19 @@ class ProjectPicture(models.Model):
 
 
 class Tag(models.Model):
-    name = models.TextField(max_length=45)
+    name = models.CharField(max_length=45)
 
     def __str__(self):
         return str(self.name)
 
 
 class Comment(models.Model):
-    content = models.TextField(max_length=3000)
+    content = models.TextField(max_length=3000, blank=False, default=None)
     project = models.ForeignKey("Project", on_delete=models.CASCADE)
     user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(f'comment by {self.user.user_name.username} on {self.project.title} project.')
 
 
 class ProjectReport(models.Model):
