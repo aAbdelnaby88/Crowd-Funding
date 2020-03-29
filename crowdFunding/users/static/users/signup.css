@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+  font-size: 12px;
+  line-height: 1.8em;
+  text-transform: none;
+  letter-spacing: .075em;
+  font-weight: bold;
+  font-style: normal;
+  text-decoration: none;
+  color: #e7bd74;
+  background-color: rgba(34,28,28);
+  display: block;
+}
+
+.title {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+h1, h2, h3, h4 {
+  color: rgba(255,255,255);
+  font-weight: 100;
+  font-size: 3rem;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+}

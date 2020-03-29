@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
 from PIL import Image
 # Create your models here.
 class Profile(models.Model):
@@ -31,3 +32,10 @@ class Profile(models.Model):
 
     def update_user_profile(sender, instance, created, **kwargs):
         pass
+
+    def create_profile(sender, **kwargs):
+        if kwargs['created']:
+            user_profile = Profile.objects.create(user_name=kwargs['instance'])
+
+
+    post_save.connect(create_profile, sender=User)

@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
+    'crispy_forms_semantic_ui',
 
 
 ]
@@ -131,4 +133,5 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "media"),
 ]
 
-
+LOGIN_REDIRECT_URL = '/profile'
+LOGOUT_REDIRECT_URL = '/profile'
