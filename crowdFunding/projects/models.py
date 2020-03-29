@@ -1,21 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+from django.utils import timezone
 from django.db import models
-#from users.models import User
+from users.models import Profile
 # Create your models here.
 
 
 class Project(models.Model):
-    title = models.TextField(max_length=45)
+    title = models.CharField(max_length=45)
     details = models.TextField(max_length=3000)
     target = models.IntegerField()
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    rate = models.DecimalField(max_digits=2, decimal_places=2, default=0)
+    start_date = models.DateTimeField(default=timezone.now)
+    end_date = models.DateTimeField(default=timezone.now)
+    rate = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     rates_count = models.IntegerField(default=0)
     is_featured = models.BooleanField(default=False)
-
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
     user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
     tags = models.ManyToManyField("Tag")
@@ -25,31 +24,34 @@ class Project(models.Model):
 
 
 class Category(models.Model):
-    name = models.TextField(max_length=45)
+    name = models.CharField(max_length=45)
 
     def __str__(self):
         return str(self.name)
 
 
 class ProjectPicture(models.Model):
-    img_url = models.URLField()
+    img_url = models.ImageField(upload_to='static/imgs/')
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.project.name + " - "+self.img_url)
+        return str(self.project.title)
 
 
 class Tag(models.Model):
-    name = models.TextField(max_length=45)
+    name = models.CharField(max_length=45)
 
     def __str__(self):
         return str(self.name)
 
 
 class Comment(models.Model):
-    content = models.TextField(max_length=3000)
+    content = models.TextField(max_length=3000, blank=False, default=None)
     project = models.ForeignKey("Project", on_delete=models.CASCADE)
     user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(f'comment by {self.user.user_name.username} on {self.project.title} project.')
 
 
 class ProjectReport(models.Model):

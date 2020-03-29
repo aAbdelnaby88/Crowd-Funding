@@ -1,0 +1,31 @@
+{% extends 'projects/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <link rel="stylesheet" href="../static/style.css">
+  <form class="create_s" method="post" enctype="multipart/form-data" >
+    {% csrf_token %}
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-8">
+            {{ form.title|as_crispy_field }}        
+            {{ form.details|as_crispy_field }}
+            {{ form.target|as_crispy_field }}
+            {{ form.start_date|as_crispy_field }}
+            {{ form.end_date|as_crispy_field }}
+            {{ form.category|as_crispy_field }}        
+            {{ form.tags|as_crispy_field }}
+        </div>
+        <div class="col-8">
+          {% comment %} {{ formset.as_p }} {% endcomment %}
+          {{ formset.management_form }}
+          {% for form in formset %}
+              {{ formset }}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-success">Create Project</button>
+  </form>
+{% endblock %}

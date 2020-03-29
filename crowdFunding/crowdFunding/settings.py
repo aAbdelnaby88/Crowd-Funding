@@ -30,17 +30,18 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+INSTALLED_APPS = [    
     'projects',
-    'users.apps.UsersConfig',
+    'users',    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crispy_forms',
     'crispy_forms_semantic_ui',
+    'bootstrap4',
+    'crispy_forms',
 
 
 ]
@@ -133,5 +134,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "media"),
 ]
 
+
 LOGIN_REDIRECT_URL = '/profile'
 LOGOUT_REDIRECT_URL = '/profile'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
