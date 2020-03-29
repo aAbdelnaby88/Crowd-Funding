@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from __future__ import 
-from .models import *
+# from __future__ import
+# from .models import *
 from django.shortcuts import render
 from .forms import ProjectsForm
 from django.http.response import HttpResponse
