@@ -1,4 +1,10 @@
+asgiref==3.2.5
+bootstrap4==0.1.0
 Django==2.1.5
 django-crispy-forms==1.9.0
 Pillow==7.0.0
 pytz==2019.3
+<<<<<<< HEAD
+=======
+sqlparse==0.3.1
+>>>>>>> 297ec60c4da43568387e1c53ce8f9849909e7bc5
