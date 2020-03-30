@@ -31,7 +31,7 @@ def signup(request):
     return render(request, 'registration/signup.html', context)
 
 
-@login_required
+
 def userProfile(request, uid):
     user2 = get_object_or_404(User, id=uid)
     # categories = Categories.objects.all()
@@ -45,9 +45,8 @@ def userProfile(request, uid):
     return render(request,"users/profile.html", context)
 
 
-@login_required
-def editProfile(request, uid):
-    user2 = get_object_or_404(User, id=uid)
+def editProfile(request, eid):
+    user2 = get_object_or_404(User, id=eid)
     # categories = Categories.objects.all()
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
@@ -59,7 +58,7 @@ def editProfile(request, uid):
             u_form.save()
             p_form.save()
             messages.success(request, f'Your account has been updated!')
-            return redirect('users:profile', uid=uid)
+            return redirect('users:profile', uid=eid)
 
     else:
         u_form = UserUpdateForm(instance=request.user)
