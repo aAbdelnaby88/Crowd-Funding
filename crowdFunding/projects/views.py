@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
-<<<<<<< HEAD
-# from __future__ import
-=======
-# from __future__ import 
->>>>>>> 297ec60c4da43568387e1c53ce8f9849909e7bc5
+
 # from .models import *
 from django.shortcuts import render
 from .forms import ProjectsForm , ImageForm
