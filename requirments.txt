@@ -4,11 +4,5 @@ Django==2.1.5
 django-crispy-forms==1.9.0
 Pillow==7.0.0
 pytz==2019.3
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
 crispy-forms-semantic-ui>=0.2.0 # added to ease up testing of semantic ui templates
->>>>>>> b21da15004911730ac3353e57eca00a8fe117048
 sqlparse==0.3.1
->>>>>>> 297ec60c4da43568387e1c53ce8f9849909e7bc5
