@@ -42,7 +42,7 @@
                 <input type="hidden" name="next" value="{{ next }}">
 
 				<div class="sign-up">
-					Don't have an account? <a href="#">Create One</a>
+					Don't have an account? <a href="{% url 'users:signup' %}">Create One</a>
 				</div>
 			</form>
             {# Assumes you setup the password_reset view in your URLconf #}
