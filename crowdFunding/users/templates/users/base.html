@@ -48,9 +48,6 @@
             <li class="nav-item active">
                 <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
@@ -63,9 +60,18 @@
                     <a class="dropdown-item" href="#">See all</a>
                 </div>
             </li>
+            {% if user.is_authenticated %}
             <li class="nav-item active">
-                <a class="nav-link" href="#">Login<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{% url 'login' %}">Login<span class="sr-only">(current)</span></a>
             </li>
+            {% else %}
+             <li class="nav-item active">
+                <a class="nav-link" href="{% url 'login' %}">Login<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'signup' %}">Sign up<span class="sr-only">(current)</span></a>
+            </li>
+            {% endif %}
  </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -96,26 +102,12 @@
                             <li><a href="#"></a></li>
                             <li><a href="#">Payment Center</a></li>
                             <li><a href="#">Contact Directory</a></li>
-                            <li><a href="#">Forms</a></li>
-                            <li><a href="#">News and Updates</a></li>
-                            <li><a href="#">FAQs</a></li>
+
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
-                    <!--Column1-->
-                    <div class="footer-pad">
-                        <h4>Heading 2</h4>
-                        <ul class="list-unstyled">
-                            <li><a href="#">Website Tutorial</a></li>
-                            <li><a href="#">Accessibility</a></li>
-                            <li><a href="#">Disclaimer</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">FAQs</a></li>
-                            <li><a href="#">Webmaster</a></li>
-                        </ul>
-                    </div>
-                </div>
+
 
                 <div class="col-md-3">
                     <h4>Follow Us</h4>
@@ -133,6 +125,7 @@
 
 
         </div>
+    </div>
     </div>
 
 </footer>
