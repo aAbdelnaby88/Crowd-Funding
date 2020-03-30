@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import 
 from .models import *
 from django.shortcuts import render
 from .forms import ProjectsForm
@@ -15,6 +13,21 @@ def showProject(request , id):
     context = { 'pData' : item ,
             'pPics' : pPics}
     return render(request,"projects/viewProject.html", context)
+
+
+def showCategoryProjects(request , id):
+    category=Category.objects.get(id=id)
+    projectsList=Project.objects.all().filter(category_id=id)
+    projectImg = ProjectPicture.objects.none()
+
+    for p in projectsList:
+        projectImg = ProjectPicture.objects.distinct().order_by('project_id')
+        
+    context = { 'catName' : category ,
+            'projData' : projectsList,
+            'projImgs':projectImg }
+    return render(request,"projects/viewCategory.html", context)
+
 
 def create (request):
     if request.method == 'POST' :
