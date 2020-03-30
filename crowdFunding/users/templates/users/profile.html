@@ -4,29 +4,29 @@
   <main role="main" class="container mt-4">
     <div class="row">
       <div class="col-md-8">
-<!--            <div class="media">-->
-<!--              <img src="{{ profile.user_image.url }}" class="mr-3" alt="picture">-->
-<!--              <div class="media-body mt-4">-->
-<!--                <h5 class="mt-0">{{user.username}}</h5>-->
-<!--                  {{user.email}}-->
-<!--                  <br>-->
-<!--                  {{profile.facebook}}-->
-<!--              </div>-->
-<!--            </div>-->
 
                 <div class="content-section">
                   <div class="media">
-                    <img class="rounded-circle account-img" src="{{ profile.user_image.url }}">
+                      {% if userprofile.profile.user_image %}
+                        <img src="{{ userprofile.profile.user_image.url }}" width="200" height="150" class="rounded-circle account-img">
+                      {% endif %}
+
                     <div class="media-body m-4">
                       <h2 class="account-heading">{{user.username}}</h2>
                       <p class="text-secondary">
                           {{user.email}}
                           <br>
-                          {{profile.facebook}}
+                          {{userprofile.profile.facebook}}
                         </p>
                     </div>
                   </div>
                   <!-- FORM HERE -->
+ <div class="container">
+    {% block content1 %}
+       <p>shimaa</p>
+     {% endblock %}
+</div>
+
                 </div>
            </div>
       <div class="col-md-4">
@@ -37,7 +37,7 @@
               <li class="list-group-item list-group-item-light">Latest Projects</li>
               <li class="list-group-item list-group-item-light">Annotations</li>
               <li class="list-group-item list-group-item-light">Categories</li>
-              <li class="list-group-item list-group-item-light">Edit Profile</li>
+            <li class="list-group-item list-group-item-light"><a href = "{% url 'users:edit' user.id %}" >Edit Profile</a></li>
             </ul>
           </p>
         </div>

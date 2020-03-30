@@ -29,7 +29,7 @@ def create(request):
 
         if form.is_valid() and formset.is_valid():
             new_form = form.save(commit=False)
-            new_form.user = Profile.objects.get(user_name=request.user)
+            new_form.user = Profile.objects.get(user=request.user)
             new_form.save()
             for form in formset.cleaned_data:
                 #this helps to not crash if the user   
