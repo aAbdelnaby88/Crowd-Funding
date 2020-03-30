@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-# from __future__ import 
-# from .models import *
+
+from .models import *
 from django.shortcuts import render
 from .forms import ProjectsForm , ImageForm
 from django.http.response import HttpResponse
@@ -22,8 +21,27 @@ def showProject(request, id):
 
 def create(request):
 
+
+
+def showCategoryProjects(request , id):
+    category=Category.objects.get(id=id)
+    projectsList=Project.objects.all().filter(category_id=id)
+    projectImg = ProjectPicture.objects.none()
+
+    for p in projectsList:
+        projectImg = ProjectPicture.objects.distinct().order_by('project_id')
+        
+    context = { 'catName' : category ,
+            'projData' : projectsList,
+            'projImgs':projectImg }
+    return render(request,"projects/viewCategory.html", context)
+
+
+def create (request):
+
     ImageFormSet = modelformset_factory(ProjectPicture,form=ImageForm , extra=1 )
                                         
+
     if request.method == 'POST' :
         form = ProjectsForm(request.POST)
         formset = ImageFormSet(request.POST, request.FILES)
