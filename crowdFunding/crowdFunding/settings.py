@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [    
+INSTALLED_APPS = [
     'projects',
     'users',
     'django.contrib.admin',
@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'crispy_forms_semantic_ui',
     'bootstrap4',
     'crispy_forms',
-    'django_countries'
+    'django_countries',
+    'taggit'
 
 ]
 
@@ -136,7 +137,7 @@ STATICFILES_DIRS = [
 
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
+TAGGIT_CASE_INSENSITIVE = True
 
 LOGIN_REDIRECT_URL = '/profile'
 LOGOUT_REDIRECT_URL = '/profile'
@@ -145,7 +146,6 @@ LOGOUT_REDIRECT_URL = '/profile'
 LOGIN_REDIRECT_URL = 'users:index'
 LOGIN_URL = 'login'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
 
 
 # EMAIL_USE_TLS = True

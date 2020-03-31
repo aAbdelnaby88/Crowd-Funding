@@ -4,8 +4,7 @@ from django.utils import timezone
 from django.db import models
 from users.models import Profile
 from django.template.defaultfilters import slugify
-# Create your models here.
-
+from taggit.managers import TaggableManager
 
 class Project(models.Model):
     title = models.CharField(max_length=45)
@@ -16,7 +15,7 @@ class Project(models.Model):
     is_featured = models.BooleanField(default=False)
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
     user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
-    tags = models.ManyToManyField("Tag")
+    tags = TaggableManager()
     created_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -36,13 +35,6 @@ class ProjectPicture(models.Model):
 
     def __str__(self):
         return str(self.project.title)
-
-
-class Tag(models.Model):
-    name = models.CharField(max_length=45)
-
-    def __str__(self):
-        return str(self.name)
 
 
 class Comment(models.Model):
