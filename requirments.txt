@@ -1,8 +1,9 @@
 asgiref==3.2.5
 bootstrap4==0.1.0
+crispy-forms-semantic-ui==0.2.0
 Django==2.1.5
+django-countries==6.1.2
 django-crispy-forms==1.9.0
 Pillow==7.0.0
 pytz==2019.3
-crispy-forms-semantic-ui>=0.2.0 # added to ease up testing of semantic ui templates
 sqlparse==0.3.1
