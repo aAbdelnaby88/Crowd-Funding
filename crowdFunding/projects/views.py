@@ -1,27 +1,25 @@
 
+from django.shortcuts import render , redirect
 from .models import *
-from django.shortcuts import render
 from .forms import ProjectsForm , ImageForm
 from django.http.response import HttpResponse
 from users.models import Profile
 from django.contrib.auth.models import User
 from django.forms import modelformset_factory
-from .models import ProjectPicture , Project
-from django.contrib import messages
-
+from .models import ProjectPicture , Project , Comment , Donation
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_control
 # Create your views here.
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def showProject(request, id):
     item = Project.objects.get(id=id)
     pPics = ProjectPicture.objects.all().filter(project_id=id)
+    
     context = {'pData': item,
-               'pPics': pPics}
+               'pPics': pPics,
+               }
     return render(request, "projects/viewProject.html", context)
-
-def create(request):
-
-
 
 def showCategoryProjects(request , id):
     category=Category.objects.get(id=id)
@@ -36,15 +34,15 @@ def showCategoryProjects(request , id):
             'projImgs':projectImg }
     return render(request,"projects/viewCategory.html", context)
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
 def create (request):
 
-    ImageFormSet = modelformset_factory(ProjectPicture,form=ImageForm , extra=1 )
-                                        
+    ImageFormSet = modelformset_factory(ProjectPicture,form=ImageForm , extra=2 )                                 
 
     if request.method == 'POST' :
         form = ProjectsForm(request.POST)
-        formset = ImageFormSet(request.POST, request.FILES)
+        formset = ImageFormSet(request.POST, request.FILES , queryset=ProjectPicture.objects.none())
 
         if form.is_valid() and formset.is_valid():
             new_form = form.save(commit=False)
@@ -70,6 +68,7 @@ def create (request):
     return render(request, 'projects/create.html', context)
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def create_comment(request, id):
     if request.method == 'POST':
         comment = Comment()
@@ -78,3 +77,6 @@ def create_comment(request, id):
         comment.user = request.user.profile_set.first()
         comment.save()
         return redirect(f'/projects/{id}')
+
+
+
