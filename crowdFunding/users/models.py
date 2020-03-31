@@ -18,10 +18,10 @@ class Profile(models.Model):
     user_image = models.ImageField(upload_to='images/users/', default='images/default.jpg')
 
     def __str__(self):
-        return f'{self.user.username} Profile'
-
-    def save(self):
-        super().save()
+        return f'{self.user.id} Profile'
+    #
+    # def save(self):
+    #     super().save()
 
         img = Image.open(self.user_image.path)
 
@@ -31,18 +31,10 @@ class Profile(models.Model):
             img.save(self.user_image.path)
 
 
-    def remove_image_update(self):
-        pass
 
-    def delete(self, *args, **kwargs):
-        pass
+    def create_profile(sender, **kwargs):
+        if kwargs['created']:
+            user_profile = Profile.objects.create(user=kwargs['instance'])
 
-    def update_user_profile(sender, instance, created, **kwargs):
-        pass
 
-    # def create_profile(sender, **kwargs):
-    #     if kwargs['created']:
-    #         user_profile = Profile.objects.create(user=kwargs['instance'])
-    #
-    #
-    # post_save.connect(create_profile, sender=User)
+    post_save.connect(create_profile, sender=User)
