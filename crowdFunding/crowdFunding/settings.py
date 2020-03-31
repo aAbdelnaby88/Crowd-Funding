@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'crispy_forms_semantic_ui',
     'bootstrap4',
     'crispy_forms',
-
+    'django_countries'
 
 ]
 

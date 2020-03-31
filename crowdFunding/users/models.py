@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 from PIL import Image
+from django_countries.fields import CountryField
+
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE , verbose_name=("User Name"))
@@ -13,7 +15,7 @@ class Profile(models.Model):
                                  message=" Please ,, Entered the Phone number in the format: '010|212|134|156'.")
     phone = models.CharField(max_length=11, null=True, blank=True , verbose_name=("Phone"))
     facebook =  models.URLField(null=True, blank=True , verbose_name=("FaceBook"))
-    country = models.CharField(max_length=30, blank=True , verbose_name=("Country"))
+    country = CountryField()
     birth_date = models.DateField(null=True, blank=True, verbose_name=("BirthDate"))
     user_image = models.ImageField(upload_to='images/users/', default='images/default.jpg')
 
