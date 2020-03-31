@@ -1,4 +1,6 @@
+
 from django.shortcuts import render , redirect
+from .models import *
 from .forms import ProjectsForm , ImageForm
 from django.http.response import HttpResponse
 from users.models import Profile
@@ -19,12 +21,25 @@ def showProject(request, id):
                }
     return render(request, "projects/viewProject.html", context)
 
+def showCategoryProjects(request , id):
+    category=Category.objects.get(id=id)
+    projectsList=Project.objects.all().filter(category_id=id)
+    projectImg = ProjectPicture.objects.none()
+
+    for p in projectsList:
+        projectImg = ProjectPicture.objects.distinct().order_by('project_id')
+        
+    context = { 'catName' : category ,
+            'projData' : projectsList,
+            'projImgs':projectImg }
+    return render(request,"projects/viewCategory.html", context)
+
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
-def create(request):
+def create (request):
 
-    ImageFormSet = modelformset_factory(ProjectPicture,form=ImageForm , extra=2 )
-                                        
+    ImageFormSet = modelformset_factory(ProjectPicture,form=ImageForm , extra=2 )                                 
+
     if request.method == 'POST' :
         form = ProjectsForm(request.POST)
         formset = ImageFormSet(request.POST, request.FILES , queryset=ProjectPicture.objects.none())
