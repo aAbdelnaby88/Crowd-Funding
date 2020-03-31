@@ -18,10 +18,10 @@
         </div>
         <div class="col-8">
           {% comment %} {{ formset.as_p }} {% endcomment %}
-          {{ formset.management_form }}
-          {% for form in formset %}
+          {% comment %} {{ formset.management_form }} {% endcomment %}
+          {% comment %} {% for form in formset %} {% endcomment %}
               {{ formset }}
-          {% endfor %}
+          {% comment %} {% endfor %} {% endcomment %}
         </div>
       </div>
     </div>

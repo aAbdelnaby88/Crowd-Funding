@@ -15,5 +15,5 @@ class ImageForm(forms.ModelForm):
     #image = forms.ImageField(label='Image')    
     class Meta:
         model = ProjectPicture
-        fields = ('img_url', )
+        fields = ['img_url', ]
 

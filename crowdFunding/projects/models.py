@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.utils import timezone
 from django.db import models
 from users.models import Profile
+from django.template.defaultfilters import slugify
 # Create your models here.
 
 
@@ -18,9 +19,9 @@ class Project(models.Model):
     tags = models.ManyToManyField("Tag")
     created_at = models.DateTimeField(auto_now_add=True)
 
+
     def __str__(self):
         return str(self.title)
-
 
 class Category(models.Model):
     name = models.CharField(max_length=45)
@@ -30,8 +31,8 @@ class Category(models.Model):
 
 
 class ProjectPicture(models.Model):
-    img_url = models.ImageField(upload_to='static/imgs/')
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    img_url = models.ImageField(upload_to = 'imgs/' ,verbose_name='Image')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE , default=None)
 
     def __str__(self):
         return str(self.project.title)

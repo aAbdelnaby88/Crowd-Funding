@@ -9,6 +9,9 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/comments.css' %}">
+<link rel="stylesheet" type="text/css" href="../static/css/styleP.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 
 <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
@@ -50,18 +53,61 @@
             <h2>{{pData.title }}</h2>
       </div>
       <div class="card-body">
-            <h5 class="card-title"> Target: {{ pData.target }} $ </h5>
-            <p class="card-text text-left"> {{ pData.details }}</p>
+            <h3 class="card-text text-left"> {{ pData.details }}</h3>
+            <h3 class="card-title"> {{ Donation.amount }} raised of ${{ pData.target }}  </h3>
+
+            <div class="stars">
+                  <br>
+                  <h3>Your Rate </h3>
+                  <form action="">
+                        <input class="star star-5" id="star-5" type="radio" name="star"/>
+                        <label class="star star-5" for="star-5"></label>
+                        <input class="star star-4" id="star-4" type="radio" name="star"/>
+                        <label class="star star-4" for="star-4"></label>
+                        <input class="star star-3" id="star-3" type="radio" name="star"/>
+                        <label class="star star-3" for="star-3"></label>
+                        <input class="star star-2" id="star-2" type="radio" name="star"/>
+                        <label class="star star-2" for="star-2"></label>
+                        <input class="star star-1" id="star-1" type="radio" name="star"/>
+                        <label class="star star-1" for="star-1"></label>
+                  </form>
+            </div>
+            <h3 class="card-title"> Project Rate {{ pData.rate }}  </h3>
+                  {% for i in '01234'|make_list %}
+                        {% if pData.rate >= forloop.counter %}
+                              <span class="fa fa-star checked "></span>
+                        {% else %}
+                              <span class="fa fa-star  "></span>
+                        {% endif %}
+                  {% endfor%}  
+                  
       </div>
       <div class="card-footer text-muted text-left">
             <ul class="list-group list-group-horizontal">
                   {% for tag in pData.tags.all%}
-                  <li class="list-group-item"> <a href="#">{{tag.name}}</a> </li>
+                  <li class="list-group-item">
+                   <a href="#">{{tag.name}}</a>
+                  </li>
                   {% endfor%}
             </ul>
 
       </div>
+<div class="card text-center">
+      <form style="margin-left: 220; margin-top: 10;">
+            <div class="donationbox">
+                  <div class="dollarsign">$</div>
+                  <input class="donationamount " maxlength="6" tabindex="1" type="text" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value="" required>
+                  <input class="submit" type="submit" value="Donate Now">
+            </div>
+      </form>
+</div> 
+     
 </div>
+
+
+
+
+
 <hr>
 <h3>Comments</h3>
 <div>
@@ -73,7 +119,7 @@
             <button class="btn btn-primary text-right" type="submit">Add comment</button>
       </form>
 </div>
-{%for comment in pData.comment_set.all %}
+{% for comment in pData.comment_set.all %}
 <div class="card">
       <div class="card-body text-left">
             <div class="row">
@@ -84,14 +130,19 @@
                         <div class=" clearfix">
                         </div>
                         <p>{{comment.content}}</p>
-
+                        
                   </div>
             </div>
-
       </div>
 </div>
-{%endfor%}
+<button class="btn btn-primary text-left" type="submit">Report comment</button>
+{% endfor %}
 
-
+<div class="card text-left">
+      <form>
+            <textarea rows="5" cols="70" name="report" style="resize = none" required ></textarea>
+            <input class="report" type="submit" value="Report This Project">
+      </form>
+</div> 
 
 {% endblock %}
