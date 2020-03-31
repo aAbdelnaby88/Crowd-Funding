@@ -12,12 +12,11 @@ class Project(models.Model):
     target = models.IntegerField()
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)
-    rate = models.DecimalField(max_digits=4, decimal_places=2, default=0)
-    rates_count = models.IntegerField(default=0)
     is_featured = models.BooleanField(default=False)
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
     user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
     tags = models.ManyToManyField("Tag")
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.title)
@@ -49,6 +48,7 @@ class Comment(models.Model):
     content = models.TextField(max_length=3000, blank=False, default=None)
     project = models.ForeignKey("Project", on_delete=models.CASCADE)
     user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(f'comment by {self.user.user_name.username} on {self.project.title} project.')
@@ -70,3 +70,12 @@ class Donation(models.Model):
     amount = models.IntegerField()
     project = models.ForeignKey("Project", on_delete=models.CASCADE)
     user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Rate(models.Model):
+    value = models.IntegerField()
+    project = models.ForeignKey("Project", on_delete=models.CASCADE)
+    user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
+
