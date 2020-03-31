@@ -11,7 +11,11 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+from django.contrib.messages import constants as messages
 
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger'
+}
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -32,18 +36,15 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [    
     'projects',
-    'users',
+    'users',    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crispy_forms_semantic_ui',
     'bootstrap4',
     'crispy_forms',
-    'django_countries'
-
 ]
 
 MIDDLEWARE = [
@@ -126,7 +127,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
 MEDIA_URL = '/media/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, ('staticfiles'))
@@ -134,22 +134,5 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "media"),
 ]
 
-
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
-
-LOGIN_REDIRECT_URL = '/profile'
-LOGOUT_REDIRECT_URL = '/profile'
-
-
-LOGIN_REDIRECT_URL = 'users:index'
-LOGIN_URL = 'login'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-
-
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = 'verifyemail.provider@gmail.com'
-# EMAIL_HOST_PASSWORD = 'mail123456fcb'
-# EMAIL_PORT = 587

@@ -8,6 +8,9 @@
 {% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'css/comments.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/styleP.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -135,14 +138,54 @@
             </div>
       </div>
 </div>
-<button class="btn btn-primary text-left" type="submit">Report comment</button>
+<form action={% url 'report_comment' pData.id %} method="POST">
+            <input type="hidden" value="{{comment.id}}" name="comment_id">
+            <button class="btn btn-primary text-left" name="report_comment" type="submit">Report comment</button>
+            {% csrf_token %}
+</form>
 {% endfor %}
+{% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-{{ message.tags }} alert-dismissible text-center" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error{% else %}{{ message.tags|title }}{% endif %}!</strong> {{ message }}
+  </div>
+  {% endfor %}
+{% endif %}
 
-<div class="card text-left">
-      <form>
-            <textarea rows="5" cols="70" name="report" style="resize = none" required ></textarea>
-            <input class="report" type="submit" value="Report This Project">
-      </form>
-</div> 
+
+
+<div class="container"> 
+  <!-- Trigger the modal with a button -->
+  <div class="col text-center">
+      <button type="button" class="btn btn-info btn-lg " data-toggle="modal" data-target="#myModal">Report This Project</button>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Report</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form action={% url 'report_project' pData.id %} method="POST">
+            <div class="modal-body">
+                  <textarea rows="5" cols="70" name="report" style="resize = none ; width: -webkit-fill-available;" required ></textarea>
+                  {% csrf_token %}
+            </div>
+            <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Save changes</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
 
 {% endblock %}

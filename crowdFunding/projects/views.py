@@ -1,5 +1,4 @@
 from .models import *
-
 from django.shortcuts import render , redirect
 from .forms import ProjectsForm , ImageForm
 from django.http.response import HttpResponse
@@ -8,6 +7,7 @@ from django.contrib.auth.models import User
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
+from django.contrib import messages
 # Create your views here.
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -37,7 +37,7 @@ def showCategoryProjects(request , id):
 @login_required
 def create (request):
 
-    ImageFormSet = modelformset_factory(ProjectPicture,form=ImageForm , extra=2 )                                 
+    ImageFormSet = modelformset_factory(ProjectPicture,form=ImageForm , extra=4 )                                 
 
     if request.method == 'POST' :
         form = ProjectsForm(request.POST)
@@ -59,7 +59,7 @@ def create (request):
     else:
 
         form = ProjectsForm()
-        formset = ImageFormSet()
+        formset = ImageFormSet(queryset=ProjectPicture.objects.none())
         context = {
             'form' : form ,
             'formset' : formset ,
@@ -78,4 +78,31 @@ def create_comment(request, id):
         return redirect(f'/projects/projectDetails/{id}')
 
 
+
+def report_project(request, id):
+    if request.method == 'POST':
+        report_pro = ProjectReport.objects.create(
+            content=request.POST['report'],
+            project_id = id ,
+            user = request.user.profile 
+        )
+        # report_pro.content += request.POST['content']
+        # report_pro.project_id = id
+        # report_pro.user = request.user.profile
+        # report_pro.save()
+        return redirect(f'/projects/projectDetails/{id}')
+
+
+def report_comment(request, id):
+    if request.method == 'POST':
+        if len(list(CommentReport.objects.filter(comment_id=request.POST['comment_id'] , user=request.user.profile ))) == 0 :
+            report_com = CommentReport.objects.create(
+                
+                comment_id = request.POST['comment_id'],
+                user = request.user.profile 
+            )
+        else :
+            messages.error(request, 'You reported this comment before!')
+        return redirect(f'/projects/projectDetails/{id}')
+    
 

@@ -62,7 +62,6 @@ class ProjectReport(models.Model):
 
 
 class CommentReport(models.Model):
-    content = models.TextField(max_length=3000)
     comment = models.ForeignKey("Comment", on_delete=models.CASCADE)
     user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
 
