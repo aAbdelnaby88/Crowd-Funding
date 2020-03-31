@@ -17,7 +17,7 @@ class Profile(models.Model):
     facebook =  models.URLField(null=True, blank=True , verbose_name=("FaceBook"))
     country = CountryField()
     birth_date = models.DateField(null=True, blank=True, verbose_name=("BirthDate"))
-    user_image = models.ImageField(upload_to='images/users/', default='images/default.jpg')
+    user_image = models.ImageField(upload_to='images/users/', default='images/users/default.jpg')
 
     def __str__(self):
         return f'{self.user.id} Profile'
