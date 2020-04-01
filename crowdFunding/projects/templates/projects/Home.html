@@ -1,0 +1,108 @@
+{% extends 'projects/base.html' %}
+{% load static %}
+
+{% block head-css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
+    <link href="{% static 'css/home.css' %}" rel="stylesheet" media="screen">
+{% endblock %}
+
+{% block content %}
+
+    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner" >
+        {% for p in latestFiveList %}
+            {% if forloop.counter == 1 %}
+                <div class="carousel-item slideCss active" >
+                      <img src="/static/{{p.imgs.all.first.img_url}}" class="d-block slideCss">
+                      <div class="carousel-caption d-none d-md-block">
+                        <h5 class="sliderTitle">{{p.title}}  </h5>
+                        <p class="sliderDesc"> {{p.details}}</p>
+                      </div>
+                </div>
+             {% else %}
+                <div class="carousel-item slideCss" >
+                      <img src="/static/{{p.imgs.all.first.img_url}}" class="d-block slideCss">
+                      <div class="carousel-caption d-none d-md-block">
+                        <h5 class="sliderTitle">{{p.title}}  </h5>
+                        <p class="sliderDesc"> {{p.details}} </p>
+                      </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
+
+    <h1 class="subTitle"> Latest Projects</h1> 
+    <hr>
+
+    <div class="row">
+        {% for p in latestFiveList %}
+        {% if forloop.counter  != 2 and forloop.counter  <= 3 %}
+            <div class="col-md-3 latestproject">
+                <div class="card cardDes">
+                     <a href="{% url 'show_proj' p.id %}">
+                    <img src="/static/{{ p.imgs.all.first.img_url }}" class="card-img-top projImg"> </a>
+                    <div class="card-body">
+                      <h5 class="card-title">{{p.title }}</h5>
+                      <p class="card-text desc">{{p.details }}</p>
+                    </div>
+                </div>
+            </div>
+        {% elif forloop.counter == 2 %}
+            <div class="col-md-6 latestproject">
+                <div class="card cardDes">
+                 <a href="{% url 'show_proj' p.id %}">
+                    <img src="/static/{{ p.imgs.all.first.img_url }}" class="card-img-top projImg"> </a>
+                    <div class="card-body">
+                      <h5 class="card-title">{{p.title }}</h5>
+                      <p class="card-text desc">{{p.details }}</p>
+                    </div>
+                </div>
+            </div>
+            {% elif forloop.counter > 3 %}
+            <div class="col-md-6 latestproject">
+                <div class="card cardDes">
+                     <a href="{% url 'show_proj' p.id %}">
+                    <img src="/static/{{ p.imgs.all.first.img_url }}" class="card-img-top projImg"> </a>
+                    <div class="card-body">
+                      <h5 class="card-title">{{p.title }}</h5>
+                      <p class="card-text desc">{{p.details }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <h1 class="subTitle"> Featured Projects</h1> 
+    <hr>
+
+    <div class="row">
+        {% for p in fProject %}
+            <div class="fproject">
+                <div class="card cardDes">
+                     <a href="{% url 'show_proj' p.id %}">
+                    <img src="/static/{{ p.imgs.all.first.img_url }}" class="card-img-top projImg"> </a>
+                    <div class="card-body">
+                      <h5 class="card-title">{{p.title }}</h5>
+                      <p class="card-text desc">{{p.details }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>  
+
+    <h1 class="subTitle"> Categories </h1> 
+    <hr>
+
+    <div class="row">
+        {% for c in categs %}
+            <div class="categs">
+                <a href="{% url 'show_cate' c.id %}">
+                <img src="/static/{{ c.cat_icon }}" class="card-img-top"> </a>
+                <h5 class="card-title" style="margin-left:32%">{{c.name }}</h5>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

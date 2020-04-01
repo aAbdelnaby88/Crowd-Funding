@@ -1,5 +1,4 @@
 from .models import *
-
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ProjectsForm, ImageForm
 from django.http.response import HttpResponse
@@ -13,28 +12,17 @@ from taggit.models import Tag
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def showProject(request, id):
-    item=Project.objects.get(id=id)
-    pPics=ProjectPicture.objects.all().filter(project_id=id)
-
-    context={'pData': item,
-               'pPics': pPics,
-               }
+    item = Project.objects.get(id=id)
+    pPics = ProjectPicture.objects.all().filter(project_id=id)
+    context = {'pData': item,
+               'pPics': pPics}
     return render(request, "projects/viewProject.html", context)
 
 
 def showCategoryProjects(request, id):
     category=Category.objects.get(id=id)
-    projectsList=Project.objects.all().filter(category_id=id)
-    projectImg=ProjectPicture.objects.none()
-
-    for p in projectsList:
-        projectImg=ProjectPicture.objects.distinct().order_by('project_id')
-
-    context={'catName': category,
-               'projData': projectsList,
-               'projImgs': projectImg}
-    return render(request, "projects/viewCategory.html", context)
-
+    context = { 'catName' : category  }
+    return render(request,"projects/viewCategory.html", context)
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
@@ -88,6 +76,18 @@ def create_comment(request, id):
         return redirect(f'/projects/projectDetails/{id}')
 
 
+def home (request):
+    lFiveList= Project.objects.extra(order_by=['created_at'])
+    categories= Category.objects.all()
+    featuredList= Project.objects.all().filter(is_featured='True')
+    context = {
+        'latestFiveList': lFiveList,
+        'categs': categories,
+        'fProject': featuredList,
+    }
+    return render(request,'projects/Home.html',context)
+
+  
 def show_tag(request, slug):
     tag=get_object_or_404(Tag, slug=slug)
 

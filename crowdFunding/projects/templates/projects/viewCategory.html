@@ -13,17 +13,13 @@
 
 {% block content %}
     <div class="row">
-        {% for p in projData %}
+        {% for p in catName.project_set.all %}
             <div class="col-md-3 mt-4">
-                <div class="card">
-                    {% for img in projImgs %}
-                        {% if img.project_id == p.id %}
-                            <img src="/static/{{ img.img_url }}" class="card-img-top">
-                        {% endif %}
-                    {% endfor %}
+                <div class="card cardDes">
+                    <img src="/static/{{ p.imgs.all.first.img_url }}" class="card-img-top projImg">
                     <div class="card-body">
                       <h5 class="card-title">{{p.title }}</h5>
-                      <p class="card-text">{{p.details }}</p>
+                      <p class="card-text desc">{{p.details }}</p>
                       <a href="{% url 'show_proj' p.id %}" class="btn btn-primary"> Show Details </a>
                     </div>
                 </div>

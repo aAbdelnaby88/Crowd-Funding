@@ -15,7 +15,6 @@ class Project(models.Model):
     is_featured = models.BooleanField(default=False)
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
     user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
-    tags = TaggableManager()
     created_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -24,7 +23,7 @@ class Project(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=45)
-
+    cat_icon = models.ImageField(upload_to='static/imgs/', default=True)
     def __str__(self):
         return str(self.name)
 
