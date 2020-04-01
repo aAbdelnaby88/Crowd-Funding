@@ -19,11 +19,18 @@ from django.conf.urls.static import static
 from . import settings
 from projects import urls, views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/' , include('users.urls')),
+    path('users/', include('django.contrib.auth.urls')),
     path('projects/',include('projects.urls')),
     path('home/',views.home),
+
     ]
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

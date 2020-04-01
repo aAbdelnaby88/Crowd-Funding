@@ -1,5 +1,53 @@
 {% extends 'users/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block content %}
-is it working
+  <main role="main" class="container mt-4">
+    <div class="row">
+      <div class="col-md-8">
+
+                <div class="content-section">
+                  <div class="media">
+                      {% if userprofile.profile.user_image %}
+                        <img src="{{ userprofile.profile.user_image.url }}" width="150" height="150" class="rounded-circle account-img">
+                      {% endif %}
+
+                    <div class="media-body m-4">
+                      <h2 class="account-heading">{{userprofile.username}}</h2>
+                      <p class="text-secondary">
+                          {{userprofile.email}}
+                          <br>
+                          {{userprofile.profile.facebook}}
+                        </p>
+                    </div>
+                  </div>
+                  <!-- FORM HERE -->
+ <div class="container">
+  {% comment %} {% if user.id == userprofile.id %} {% endcomment %}
+        {% block content1 %}
+
+           <br/><br/>
+           <p>content</p>
+         {% endblock %}
+
+</div>
+
+                </div>
+           </div>
+      <div class="col-md-4">
+        <div class="content-section">
+          <h3>Options</h3>
+          <p class='text-muted'>
+            <ul class="list-group">
+              <li class="list-group-item list-group-item-light">Latest Projects</li>
+              <li class="list-group-item list-group-item-light">donations</li>
+              <li class="list-group-item list-group-item-light">Categories</li>
+               {% comment %} {% if user.id == userprofile.id %} {% endcomment %}
+              <li class="list-group-item list-group-item-light"><a href = "{% url 'users:edit' userprofile.id %}" >Edit Profile</a></li>
+
+            </ul>
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
 {% endblock %}
