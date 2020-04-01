@@ -2,10 +2,10 @@
 from __future__ import unicode_literals
 from django.utils import timezone
 from django.db import models
+from datetime import datetime
 from users.models import Profile
 from django.template.defaultfilters import slugify
-# Create your models here.
-
+from taggit.managers import TaggableManager
 
 class Project(models.Model):
     title = models.CharField(max_length=45)
@@ -16,33 +16,26 @@ class Project(models.Model):
     is_featured = models.BooleanField(default=False)
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
     user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
-    tags = models.ManyToManyField("Tag")
+    tags = TaggableManager()
     created_at = models.DateTimeField(auto_now_add=True)
-
+    
 
     def __str__(self):
         return str(self.title)
 
 class Category(models.Model):
     name = models.CharField(max_length=45)
-
+    cat_icon = models.ImageField(upload_to='static/imgs/', default=True)
     def __str__(self):
         return str(self.name)
 
 
 class ProjectPicture(models.Model):
-    img_url = models.ImageField(upload_to = 'imgs/' ,verbose_name='Image')
-    project = models.ForeignKey(Project, on_delete=models.CASCADE , default=None)
+    img_url = models.ImageField(upload_to = 'static/imgs/' ,verbose_name='Image')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE , default=None,related_name='imgs')
 
     def __str__(self):
         return str(self.project.title)
-
-
-class Tag(models.Model):
-    name = models.CharField(max_length=45)
-
-    def __str__(self):
-        return str(self.name)
 
 
 class Comment(models.Model):
@@ -70,7 +63,6 @@ class Donation(models.Model):
     amount = models.IntegerField()
     project = models.ForeignKey("Project", on_delete=models.CASCADE)
     user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
-
     created_at = models.DateTimeField(auto_now_add=True)
 
 

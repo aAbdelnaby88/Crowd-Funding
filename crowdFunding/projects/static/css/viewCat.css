@@ -1,0 +1,12 @@
+.projImg {
+    width: 100%;
+    height: 200px;
+}
+
+.desc {
+    max-lines: 1;
+    line-height: 16px;
+    max-height: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
