@@ -15,8 +15,9 @@ class Project(models.Model):
     is_featured = models.BooleanField(default=False)
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
     user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
+    tags = TaggableManager()
     created_at = models.DateTimeField(auto_now_add=True)
-
+    
 
     def __str__(self):
         return str(self.title)
