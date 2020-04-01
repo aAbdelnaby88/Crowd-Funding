@@ -1,11 +1,5 @@
-<<<<<<< HEAD
 from .models import *
-=======
-# -*- coding: utf-8 -*-
-# from __future__ import 
-# from .models import *
->>>>>>> 297ec60c4da43568387e1c53ce8f9849909e7bc5
-from django.shortcuts import render
+from django.shortcuts import render , redirect
 from .forms import ProjectsForm , ImageForm
 from django.http.response import HttpResponse
 from users.models import Profile
@@ -24,24 +18,15 @@ def showProject(request, id):
                'pPics': pPics}
     return render(request, "projects/viewProject.html", context)
 
-def create(request):
-
 
 def showCategoryProjects(request , id):
     category=Category.objects.get(id=id)
-    projectsList=Project.objects.all().filter(category_id=id)
-    projectImg = ProjectPicture.objects.none()
-
-    for p in projectsList:
-        projectImg = ProjectPicture.objects.distinct().order_by('project_id')
-        
-    context = { 'catName' : category ,
-            'projData' : projectsList,
-            'projImgs':projectImg }
+    context = { 'catName' : category  }
     return render(request,"projects/viewCategory.html", context)
 
 
 def create (request):
+
     ImageFormSet = modelformset_factory(ProjectPicture,form=ImageForm , extra=1 )
                                         
     if request.method == 'POST' :
@@ -79,4 +64,15 @@ def create_comment(request, id):
         comment.project_id = id
         comment.user = request.user.profile_set.first()
         comment.save()
-        return redirect(f'/projects/{id}')
+        return redirect(f'/projects/projectDetails/{id}')
+
+def home (request):
+    lFiveList= Project.objects.extra(order_by=['insert_date'])
+    categories= Category.objects.all()
+    featuredList= Project.objects.all().filter(is_featured='True')
+    context = {
+        'latestFiveList': lFiveList,
+        'categs': categories,
+        'fProject': featuredList,
+    }
+    return render(request,'projects/Home.html',context)

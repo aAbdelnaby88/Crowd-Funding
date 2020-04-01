@@ -18,6 +18,7 @@ class Project(models.Model):
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
     user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
     tags = models.ManyToManyField("Tag")
+    insert_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.title)
@@ -25,14 +26,14 @@ class Project(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=45)
-
+    cat_icon = models.ImageField(upload_to='static/imgs/', default=True)
     def __str__(self):
         return str(self.name)
 
 
 class ProjectPicture(models.Model):
     img_url = models.ImageField(upload_to='static/imgs/')
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="imgs")
 
     def __str__(self):
         return str(self.project.title)
