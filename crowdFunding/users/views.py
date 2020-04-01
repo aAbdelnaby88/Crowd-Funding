@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render , get_object_or_404, redirect
 from django.contrib.auth.forms import UserCreationForm , UserChangeForm
 from django.contrib.auth import  login , authenticate
-from .forms import SignUpForm , UserUpdateForm, ProfileUpdateForm
+from .forms import SignUpForm , UserUpdateForm, ProfileUpdateForm , UserDeleteForm
 from django.contrib.auth import  login , authenticate, logout
 from django.contrib.auth.decorators import login_required
 from users.models import Profile
@@ -14,6 +14,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 # from .token_generator import account_activation_token
 from django.core.mail import EmailMessage
+
 # Create your views here.
 
 def index(request):
@@ -105,3 +106,36 @@ def editProfile(request, uid):
     }
 
     return render(request, "users/edit_profile.html", context)
+
+
+# def deleteProfile(request , uid):
+#     user2 = request.user
+#     form = UserFormPassword(request.POST)
+#     if form.is_valid():
+#         print("wwww")
+#         user = authenticate(uid=user2.id, password=form.cleaned_data.get("password"))
+#         if user is not None:
+#             user.delete()
+#             messages.success(request, "Delete Account Sucess")
+#             return redirect("/projects/home")
+#         else:
+#             messages.error(request, "Enter Valid password ")
+#     messages.error(request, form.errors)
+#     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+# @login_required
+def deleteuser(request, uid):
+    user2 = get_object_or_404(User, id=uid)
+    if request.method == 'POST':
+        delete_form = UserDeleteForm(request.POST, instance=user2)
+        user2.delete()
+        messages.info(request, 'Your account has been deleted.')
+        return redirect('/projects/home')
+    else:
+        delete_form = UserDeleteForm(instance=user2)
+
+    context = {
+        'delete_form': delete_form
+    }
+
+    return render(request, 'users/delete_account.html', context)

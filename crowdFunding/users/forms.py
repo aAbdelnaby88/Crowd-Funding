@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Profile
+from django.forms import ModelForm
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
@@ -29,3 +30,13 @@ class ProfileUpdateForm(forms.ModelForm):
          model = Profile
          fields = ['user_image', 'birth_date', 'country', 'facebook', 'phone']
 
+
+# class UserFormPassword(ModelForm):
+#     class Meta:
+#         model = User
+#         fields = ['password',]
+
+class UserDeleteForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = []   #Form has only submit button.  Empty "fields" list still necessary, though.
