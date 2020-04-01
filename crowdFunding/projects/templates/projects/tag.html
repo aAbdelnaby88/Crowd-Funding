@@ -16,7 +16,7 @@
     {% for p in projects %}
     <div class="col-md-3 mt-4">
         <div class="card">
-<!--              --><img src="/static/{{ p.imgs }}" class="card-img-top">
+<!--              --><img src="/static/{{ p.imgs.first.img_url }}" class="card-img-top">
             <div class="card-body">
                 <h5 class="card-title">{{p.title }}</h5>
                 <p class="card-text">{{p.details }}</p>
