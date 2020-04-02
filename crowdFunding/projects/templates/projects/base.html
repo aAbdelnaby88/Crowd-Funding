@@ -15,8 +15,19 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
 
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+      <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'users/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="{% static 'users/css/mdb.min.css' %}" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="{% static 'users/css/style.min.css' %}" rel="stylesheet">
+
     <meta charset="UTF-8">
     <title> {% block title %} Home {% endblock title %}</title>
+
     {% block head-css %}
     <link rel="stylesheet" type="text/css" href="{% static 'users/footer.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'users/nav.css' %}">
@@ -37,9 +48,6 @@
             <li class="nav-item active">
                 <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
@@ -52,9 +60,19 @@
                     <a class="dropdown-item" href="#">See all</a>
                 </div>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Login<span class="sr-only">(current)</span></a>
+            {% if user.is_authenticated %}
+                  <li class="nav-item active">
+                <a class=" nav-item nav-link" href="{% url 'logout' %}">logout<span class="sr-only">(current)</span></a>
+                  </li>
+            {% else %}
+             <li class="nav-item active">
+                <a class="nav-link" href="{% url 'login' %}">Login<span class="sr-only">(current)</span></a>
             </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'users:signup' %}">Sign up<span class="sr-only">(current)</span></a>
+
+            </li>
+            {% endif %}
  </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -71,6 +89,8 @@
     {% block content %}Nothing Here{% endblock %}
 </div>
 
+
+
 <footer class="mainfooter" role="contentinfo" >
     <div class="footer-middle">
         <div class="container">
@@ -83,26 +103,12 @@
                             <li><a href="#"></a></li>
                             <li><a href="#">Payment Center</a></li>
                             <li><a href="#">Contact Directory</a></li>
-                            <li><a href="#">Forms</a></li>
-                            <li><a href="#">News and Updates</a></li>
-                            <li><a href="#">FAQs</a></li>
+
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
-                    <!--Column1-->
-                    <div class="footer-pad">
-                        <h4>Heading 2</h4>
-                        <ul class="list-unstyled">
-                            <li><a href="#">Website Tutorial</a></li>
-                            <li><a href="#">Accessibility</a></li>
-                            <li><a href="#">Disclaimer</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">FAQs</a></li>
-                            <li><a href="#">Webmaster</a></li>
-                        </ul>
-                    </div>
-                </div>
+
 
                 <div class="col-md-3">
                     <h4>Follow Us</h4>
@@ -119,16 +125,24 @@
             </div>
 
 
-
         </div>
+    </div>
     </div>
 
 </footer>
 
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <!-- JQuery -->
+  <script type="text/javascript" src="{% static 'users/js/jquery-3.4.1.min.js' %}"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="{% static 'users/js/popper.min.js' %}"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="{% static 'users/js/bootstrap.min.js' %}"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="{% static 'users/js/mdb.min.js' %}"></script>
 
 </body>
 </html>
