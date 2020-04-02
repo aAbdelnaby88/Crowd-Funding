@@ -57,7 +57,7 @@
       </div>
       <div class="card-body">
             <h3 class="card-text text-left"> {{ pData.details }}</h3>
-            <h3 class="card-title"> {{ Donation.amount }} raised of ${{ pData.target }}  </h3>
+            <h3 class="card-title"> ${{ donations_amount }} raised of ${{ pData.target }}  </h3>
 
             <div class="stars">
                   <br>
@@ -83,7 +83,14 @@
                               <span class="fa fa-star  "></span>
                         {% endif %}
                   {% endfor%}  
-                  
+                 
+      <div>  
+            
+            <h1></h1>
+            <h3 class="date_project_start"> Started At : </h3> <h3 style="display: inline;"> {{pData.start_date}}</h3>
+            <h1></h1>
+            <h3 class="date_project_end"> Ended At : </h3> <h3 style="display: inline;">{{pData.end_date}}</h3> 
+      </div>
       </div>
       <div class="card-footer text-muted text-left">
             <ul class="list-group list-group-horizontal">
@@ -95,11 +102,13 @@
             </ul>
 
       </div>
+
 <div class="card text-center">
-      <form style="margin-left: 220; margin-top: 10;">
+      <form action={% url 'donate' pData.id %} method="POST" style="margin-left: 220; margin-top: 10;">
             <div class="donationbox">
                   <div class="dollarsign">$</div>
-                  <input class="donationamount " maxlength="6" tabindex="1" type="text" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value="" required>
+                  <input class="donationamount " name="donate" maxlength="6" tabindex="1" type="text" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value="" required>
+                  {% csrf_token %}
                   <input class="submit" type="submit" value="Donate Now">
             </div>
       </form>

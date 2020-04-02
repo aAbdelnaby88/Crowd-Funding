@@ -1,5 +1,18 @@
+
 .fa  {
     font-size: 50px !important;
+}
+
+.date_project_start{
+    color: green;
+    display: inline;
+}
+
+.date_project_end{
+
+    color: red;
+    display: inline;
+
 }
 
 .checked {
