@@ -141,11 +141,8 @@ STATICFILES_DIRS = [
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 TAGGIT_CASE_INSENSITIVE = True
 
-LOGIN_REDIRECT_URL = '/profile'
-LOGOUT_REDIRECT_URL = '/profile'
 
-
-# LOGIN_REDIRECT_URL = 'users:profile'
+LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
