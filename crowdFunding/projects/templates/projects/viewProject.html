@@ -13,6 +13,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'css/comments.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/styleP.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/viewCat.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 
@@ -187,5 +188,27 @@
   </div>
   
 </div>
+ <h1 class="subTitle"> Related Projects</h1> 
+<hr>
+
+    <div class="row">
+        {% for p in relatedProjs %}
+            {% if forloop.counter < 5 %}
+                        {% if p != pData %}
+                              <div class="col-md-3 mt-4">
+                                 <div class="card cardDes">
+                                     <img src="/static/{{ p.imgs.all.first.img_url }}" class="card-img-top projImg">
+                                     <div class="card-body">
+                                       <h5 class="card-title">{{p.title }}</h5>
+                                       <p class="card-text desc">{{p.details }}</p>
+                                       <a href="{% url 'show_proj' p.id %}" class="btn btn-primary"> Show Details </a>
+                                     </div>
+                                 </div>
+                              </div>>
+                       {% endif %}
+                 
+            {% endif %}
+        {% endfor %}
+    </div>
 
 {% endblock %}

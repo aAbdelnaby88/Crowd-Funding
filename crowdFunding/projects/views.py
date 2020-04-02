@@ -1,13 +1,15 @@
 from .models import *
+import json 
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import ProjectsForm, ImageForm
-from django.http.response import HttpResponse
+from .forms import ProjectsForm, ImageForm,SearchForm
+from django.http.response import HttpResponse, HttpResponseRedirect
 from users.models import Profile
 from django.contrib.auth.models import User
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 from django.contrib import messages
+from django.db.models import Q
 # Create your views here.
 from taggit.models import Tag
 
@@ -16,8 +18,10 @@ from taggit.models import Tag
 def showProject(request, id):
     item = Project.objects.get(id=id)
     pPics = ProjectPicture.objects.all().filter(project_id=id)
+    relatedProjects=Project.objects.all().filter(category_id=item.category)
     context = {'pData': item,
-               'pPics': pPics}
+               'pPics': pPics,
+               'relatedProjs':relatedProjects}
     return render(request, "projects/viewProject.html", context)
 
 
@@ -89,10 +93,6 @@ def home (request):
     }
     return render(request,'projects/Home.html',context)
 
-  
-def show_tag(request, slug):
-    tag=get_object_or_404(Tag, slug=slug)
-
 def report_project(request, id):
     if request.method == 'POST':
         report_pro = ProjectReport.objects.create(
@@ -119,10 +119,29 @@ def report_comment(request, id):
             messages.error(request, 'You reported this comment before!')
         return redirect(f'/projects/projectDetails/{id}')
     
-
+def show_tag(request, slug):
+    tag=get_object_or_404(Tag, slug=slug)
     projects=Project.objects.filter(tags=tag)
     context={
         'tag': tag,
         'projects': projects,
     }
     return render(request, 'projects/tag.html', context)
+
+def search(request):
+    if request.method == 'POST':
+        inp=request.POST['textsearch']
+        found= False
+        if inp:
+            projects=Project.objects.all()
+            for p in projects:
+                if p.title == inp:
+                    pPics = ProjectPicture.objects.all().filter(project_id=p)
+                    context = {'pData': p,'pPics': pPics}
+                    found = True
+                    return render(request, "projects/viewProject.html", context)
+
+            if found== False:
+                return redirect(f'/')
+        else:
+            return redirect(f'/')

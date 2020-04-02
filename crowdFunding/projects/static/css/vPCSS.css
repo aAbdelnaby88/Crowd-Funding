@@ -19,6 +19,11 @@
     color: black;
     margin: 5px;
     font-family: Georgia, 'Times New Roman', Times, serif;
+    max-lines: 1;
+    line-height: 20px;
+    max-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .title {

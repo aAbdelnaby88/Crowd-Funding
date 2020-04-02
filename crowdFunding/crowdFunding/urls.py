@@ -26,7 +26,7 @@ urlpatterns = [
     path('users/', include('django.contrib.auth.urls')),
     path('projects/',include('projects.urls')),
     path('',views.home),
-
+    path('search/',views.search)
     ]
 
 if settings.DEBUG:

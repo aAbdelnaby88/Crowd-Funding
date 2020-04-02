@@ -24,3 +24,6 @@ class ImageForm(forms.ModelForm):
     class Meta:
         model = ProjectPicture
         fields = ['img_url', ]
+
+class SearchForm(forms.Form):
+    textsearch = forms.CharField(label='Search', max_length=100)
