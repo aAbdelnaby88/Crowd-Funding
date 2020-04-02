@@ -8,28 +8,30 @@ from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 from django.contrib import messages
-# Create your views here.
 from taggit.models import Tag
-from django.db.models import Avg
+from django.db.models import Avg,Sum
 from decimal import Decimal, ROUND_HALF_UP
 
 @login_required
+
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def showProject(request, id):
     item = Project.objects.get(id=id)
     pPics = ProjectPicture.objects.all().filter(project_id=id)
     rate = item.rate_set.all().aggregate(Avg("value"))["value__avg"]
-    print(rate)
     rate = rate if rate else 0
     rate = Decimal(rate).quantize(0, ROUND_HALF_UP)
-    
+
+    donate = item.donation_set.all().aggregate(Sum("amount"))
     context = {'pData': item,
-               'pPics': pPics,
-               'rate': rate}
+                'pPics': pPics,
+                'rate': rate,
+                'donations_amount': donate["amount__sum"] if donate["amount__sum"] else 0}
+
+
     if request.user:
         user_rate = item.rate_set.filter(
             user_id=request.user.profile.id).first()
-        print(user_rate)
         if user_rate:
             context["user_rate"] = user_rate.value
     return render(request, "projects/viewProject.html", context)
@@ -123,10 +125,7 @@ def report_project(request, id):
             project_id=id,
             user=request.user.profile
         )
-        # report_pro.content += request.POST['content']
-        # report_pro.project_id = id
-        # report_pro.user = request.user.profile
-        # report_pro.save()
+       
         return redirect(f'/projects/projectDetails/{id}')
 
 
@@ -158,3 +157,12 @@ def rate_project(request, id, value):
             'msg': "success"
         }
         return JsonResponse(data)
+
+def donate(request, id):
+    if request.method == 'POST':
+        donate = Donation.objects.create(
+            amount=request.POST['donate'],
+            project_id = id ,
+            user = request.user.profile 
+        )
+        return redirect(f'/projects/projectDetails/{id}')

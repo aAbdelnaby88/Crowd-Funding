@@ -8,13 +8,9 @@
 {% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="{% static 'css/comments.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/styleP.css' %}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 
 <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
@@ -57,30 +53,17 @@
       </div>
       <div class="card-body">
             <h3 class="card-text text-left"> {{ pData.details }}</h3>
-            <h3 class="card-title"> {{ Donation.amount }} raised of ${{ pData.target }} </h3>
-            <div style="width: auto;" class="stars">
+            <h3 class="card-title"> ${{ donations_amount }} raised of ${{ pData.target }} </h3>
+
+            <div style="width:auto" class="stars">
                   <br>
                   <h3>Your Rate </h3>
                   <form action="">
                         {% for i in '54321'|make_list %}
                         <input class="star star-{{i}}" id="star-{{i}}" type="radio" name="star"
-                              onchange="onRateChange({{ pData.id }},{{i}})" {% if i|add:"0" == user_rate %} checked {% endif %} />
-                              <label class="star star-{{i}}" for="star-{{i}}"></label>
+                            onchange="onRateChange({{ pData.id }},{{i}})" {% if i|add:"0" == user_rate %} checked {% endif %} />
+                        <label class="star star-{{i}}" for="star-{{i}}"></label>
                         {% endfor%}
-
-                   <!--   
-                        <input class="star star-4" id="star-4" type="radio" name="star"
-                              onchange="onRateChange({{ pData.id }},4)" />
-                        <label class="star star-4" for="star-4"></label>
-                        <input class="star star-3" id="star-3" type="radio" name="star"
-                              onchange="onRateChange({{ pData.id }},3)" />
-                        <label class="star star-3" for="star-3"></label>
-                        <input class="star star-2" id="star-2" type="radio" name="star"
-                              onchange="onRateChange({{ pData.id }},2)" />
-                        <label class="star star-2" for="star-2"></label>
-                        <input class="star star-1" id="star-1" type="radio" name="star"
-                              onchange="onRateChange({{ pData.id }},1)" />
-                        <label class="star star-1" for="star-1"></label> -->
                   </form>
             </div>
             <h3 class="card-title"> Project Rate {{ pData.rate }} </h3>
@@ -92,6 +75,15 @@
             {% endif %}
             {% endfor%}
 
+            <div>
+
+                  <h1></h1>
+                  <h3 class="date_project_start"> Started At : </h3>
+                  <h3 style="display: inline;"> {{pData.start_date}}</h3>
+                  <h1></h1>
+                  <h3 class="date_project_end"> Ended At : </h3>
+                  <h3 style="display: inline;">{{pData.end_date}}</h3>
+            </div>
       </div>
       <div class="card-footer text-muted text-left">
             <ul class="list-group list-group-horizontal">
@@ -103,13 +95,15 @@
             </ul>
 
       </div>
+
       <div class="card text-center">
-            <form style="margin-left: 220; margin-top: 10;">
+            <form action={% url 'donate' pData.id %} method="POST" style="margin-left: 220; margin-top: 10;">
                   <div class="donationbox">
                         <div class="dollarsign">$</div>
-                        <input class="donationamount " maxlength="6" tabindex="1" type="text"
+                        <input class="donationamount " name="donate" maxlength="6" tabindex="1" type="text"
                               onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
                               value="" required>
+                        {% csrf_token %}
                         <input class="submit" type="submit" value="Donate Now">
                   </div>
             </form>
@@ -174,7 +168,7 @@
                   Project</button>
       </div>
       <!-- Modal -->
-      <div class="modal fade" id="myModal" role="dialog">
+      <div  class="modal fade" id="myModal" role="dialog">
             <div class="modal-dialog">
                   <!-- Modal content-->
                   <div class="modal-content">
@@ -186,7 +180,7 @@
                         </div>
                         <form action={% url 'report_project' pData.id %} method="POST">
                               <div class="modal-body">
-                                    <textarea rows="5" cols="70" name="report"
+                                    <textarea rows="5" cols="40" name="report"
                                           style="resize = none ; width: -webkit-fill-available;" required></textarea>
                                     {% csrf_token %}
                               </div>
@@ -201,35 +195,37 @@
       </div>
 
 </div>
+
 <script>
       function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie != '') {
-                  var cookies = document.cookie.split(';');
-                  for (var i = 0; i < cookies.length; i++) {
-                        var cookie = jQuery.trim(cookies[i]);
-                        // Does this cookie string begin with the name we want?
-                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                              break;
-                        }
+          var cookieValue = null;
+          if (document.cookie && document.cookie != '') {
+              var cookies = document.cookie.split(';');
+              for (var i = 0; i < cookies.length; i++) {
+                  var cookie = jQuery.trim(cookies[i]);
+                  // Does this cookie string begin with the name we want?
+                  if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                      break;
                   }
-            }
-            return cookieValue;
+              }
+          }
+          return cookieValue;
       }
-
+  
       onRateChange = (id, value) => {
-            $.ajax({
-                  url: `/projects/${id}/rate/${value}`,
-                  type: "POST",
-                  beforeSend: function (request) {
-                        request.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-                  },
-                  dataType: 'json',
-                  complete: function (data) {
-                        console.log(data)
-                  }
-            });
+          $.ajax({
+              url: `/projects/${id}/rate/${value}`,
+              type: "POST",
+              beforeSend: function (request) {
+                  request.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+              },
+              dataType: 'json',
+              complete: function (data) {
+                  console.log(data)
+              }
+          });
       };
-</script>
+  </script>
+
 {% endblock %}
