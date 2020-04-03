@@ -10,12 +10,10 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 from django.contrib import messages
 from django.db.models import Q
-# Create your views here.
 from taggit.models import Tag
 from django.db.models import Avg,Sum
 from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime 
-from dateutil.parser import parse
 
 @login_required
 
@@ -28,15 +26,8 @@ def showProject(request, id):
     rate = rate if rate else 0
     rate = Decimal(rate).quantize(0, ROUND_HALF_UP)
     today = datetime.now()
-    #today = str(today)
-    #today = datetime.strptime(today, "%Y-%m-%d %H:%M:%S.%f")
     start_date = item.start_date
     end_date = item.end_date
-
-    # end_date = str(end_date)
-    # end_date = re.sub(r"([\+-]\d\d):(\d\d)(?::(\d\d(?:.\d+)?))?", r"\1\2\3",end_date)
-    # end_date = str(end_date)
-    # end_date = datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S%z")
     myFormat = "%Y-%m-%d %H:%M:%S"
     today = today.strftime(myFormat)
     today = datetime.strptime(today, "%Y-%m-%d %H:%M:%S")
@@ -45,9 +36,6 @@ def showProject(request, id):
     end_date = end_date.strftime(myFormat)
     end_date = datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S")
     donate = item.donation_set.all().aggregate(Sum("amount"))
-    print(type(today))
-    print(type(end_date))
-    print(start_date)
     context = {'pData': item,
                 'pPics': pPics,
                 'rate': rate,
