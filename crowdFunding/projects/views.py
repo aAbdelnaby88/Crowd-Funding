@@ -1,5 +1,5 @@
 from .models import *
-import json 
+import json , re
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ProjectsForm, ImageForm
 from django.http.response import HttpResponse, JsonResponse
@@ -14,6 +14,8 @@ from django.db.models import Q
 from taggit.models import Tag
 from django.db.models import Avg,Sum
 from decimal import Decimal, ROUND_HALF_UP
+from datetime import datetime 
+from dateutil.parser import parse
 
 @login_required
 
@@ -25,11 +27,33 @@ def showProject(request, id):
     rate = item.rate_set.all().aggregate(Avg("value"))["value__avg"]
     rate = rate if rate else 0
     rate = Decimal(rate).quantize(0, ROUND_HALF_UP)
+    today = datetime.now()
+    #today = str(today)
+    #today = datetime.strptime(today, "%Y-%m-%d %H:%M:%S.%f")
+    start_date = item.start_date
+    end_date = item.end_date
 
+    # end_date = str(end_date)
+    # end_date = re.sub(r"([\+-]\d\d):(\d\d)(?::(\d\d(?:.\d+)?))?", r"\1\2\3",end_date)
+    # end_date = str(end_date)
+    # end_date = datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S%z")
+    myFormat = "%Y-%m-%d %H:%M:%S"
+    today = today.strftime(myFormat)
+    today = datetime.strptime(today, "%Y-%m-%d %H:%M:%S")
+    start_date = start_date.strftime(myFormat)
+    start_date = datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S")
+    end_date = end_date.strftime(myFormat)
+    end_date = datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S")
     donate = item.donation_set.all().aggregate(Sum("amount"))
+    print(type(today))
+    print(type(end_date))
+    print(start_date)
     context = {'pData': item,
                 'pPics': pPics,
                 'rate': rate,
+                'today' : today ,
+                'start_date' : start_date ,
+                'end_date' : end_date ,
                 'relatedProjs':relatedProjects,
                 'donations_amount': donate["amount__sum"] if donate["amount__sum"] else 0}
 
