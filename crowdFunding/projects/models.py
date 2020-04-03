@@ -6,6 +6,7 @@ from datetime import datetime
 from users.models import Profile
 from django.template.defaultfilters import slugify
 from taggit.managers import TaggableManager
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Project(models.Model):
     title = models.CharField(max_length=45)
@@ -18,21 +19,23 @@ class Project(models.Model):
     user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
     tags = TaggableManager()
     created_at = models.DateTimeField(auto_now_add=True)
-    
 
     def __str__(self):
         return str(self.title)
 
+
 class Category(models.Model):
     name = models.CharField(max_length=45)
     cat_icon = models.ImageField(upload_to='static/imgs/', default=True)
+
     def __str__(self):
         return str(self.name)
 
 
 class ProjectPicture(models.Model):
-    img_url = models.ImageField(upload_to = 'static/imgs/' ,verbose_name='Image')
-    project = models.ForeignKey(Project, on_delete=models.CASCADE , default=None,related_name='imgs')
+    img_url = models.ImageField(upload_to='static/imgs/', verbose_name='Image')
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, default=None, related_name='imgs')
 
     def __str__(self):
         return str(self.project.title)
@@ -45,7 +48,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(f'comment by {self.user.user_name.username} on {self.project.title} project.')
+        return str(f'comment by {self.user.user.username} on {self.project.title} project.')
 
 
 class ProjectReport(models.Model):
@@ -67,7 +70,10 @@ class Donation(models.Model):
 
 
 class Rate(models.Model):
-    value = models.IntegerField()
+    value = models.IntegerField(default=1,
+                                validators=[
+                                    MaxValueValidator(100),
+                                    MinValueValidator(1)
+                                ])
     project = models.ForeignKey("Project", on_delete=models.CASCADE)
     user = models.ForeignKey("users.Profile", on_delete=models.CASCADE)
-
