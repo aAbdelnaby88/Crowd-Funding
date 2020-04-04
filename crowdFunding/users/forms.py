@@ -19,7 +19,7 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2',)
         unique_together = ('email',)
 
 class UserUpdateForm(forms.ModelForm):
@@ -27,7 +27,7 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
          model = User
-         fields = ['username',]
+         fields = ['first_name', 'last_name']
 
 class ProfileUpdateForm(forms.ModelForm):
 
