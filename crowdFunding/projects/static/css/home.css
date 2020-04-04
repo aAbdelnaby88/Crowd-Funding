@@ -19,8 +19,8 @@
 
 .desc {
     max-lines: 1;
-    line-height: 16px;
-    max-height: 16px;
+    line-height: 20px;
+    max-height: 20px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
