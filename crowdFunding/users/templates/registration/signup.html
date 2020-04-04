@@ -1,5 +1,6 @@
 {% extends "users/base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block content %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'users/signup.css' %}">
@@ -14,23 +15,7 @@
   <form method="post" >
     {% csrf_token %}
     {% for field in form %}
-	  <div class="row align-items-center mt-4">
-	   <div class="col">
-		   <div class="font-weight-bold text-muted">  {{ field.label_tag }}<br> </div>
-
-      <input type="text" class="form-control"
-        name="{{ field.name }}"
-        id="id_{{ field.name }}" >
-<!--        value="{{ field.value }}" >  -->
-	  </div>
-  </div>
-
-        {% if field.help_text %}
-          <small style="color: grey">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-        {% endfor %}
+      {{ field|as_crispy_field }}
     {% endfor %}
 	  <button type="submit" class="btn-submit">Sign up</button>
   </form>

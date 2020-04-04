@@ -1,4 +1,4 @@
 {
     "workbench.editor.enablePreview": false,
-    "python.pythonPath": "~/Desktop/LastPro/venv/bin/python",
+    "python.pythonPath": "/bin/python3.6",
 }

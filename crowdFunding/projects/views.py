@@ -9,11 +9,13 @@ from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 from django.contrib import messages
-from django.db.models import Q
+from django.db.models import Q,Avg,Sum
 # Create your views here.
 from taggit.models import Tag
 from django.db.models import Avg,Sum
 from decimal import Decimal, ROUND_HALF_UP
+from django.template.loader import render_to_string
+
 
 @login_required
 
@@ -101,14 +103,26 @@ def create_comment(request, id):
 
 
 def home(request):
-    lFiveList = Project.objects.extra(order_by=['created_at'])
+    projectRates= Rate.objects.all().values('project').annotate(Avg('value')).order_by('-value__avg')[:5]
+    print (projectRates)
+
+    hRatedProjects= []
+    for p in projectRates:
+        print(p.get('project'))
+        hRatedProjects.extend(list(Project.objects.filter(id=p.get('project'))))
+        print (hRatedProjects)
+
+    lFiveList = Project.objects.extra(order_by=['-created_at'])
     categories = Category.objects.all()
     featuredList = Project.objects.all().filter(is_featured='True')
     context = {
         'latestFiveList': lFiveList,
         'categs': categories,
         'fProject': featuredList,
+        'hRProjects':hRatedProjects,
     }
+    render(request, 'projects/base.html', {'categs': categories})
+    render(request, 'users/base.html', {'categs': categories})
     return render(request, 'projects/Home.html', context)
 
 
@@ -146,23 +160,14 @@ def report_comment(request, id):
             messages.error(request, 'You reported this comment before!')
         return redirect(f'/projects/projectDetails/{id}')
 
-def search(request):
-    if request.method == 'POST':
-        inp=request.POST['textsearch']
-        found= False
-        if inp:
-            projects=Project.objects.all()
-            for p in projects:
-                if p.title == inp:
-                    pPics = ProjectPicture.objects.all().filter(project_id=p)
-                    context = {'pData': p,'pPics': pPics}
-                    found = True
-                    return render(request, "projects/viewProject.html", context)
 
-            if found== False:
-                return redirect(f'/')
-        else:
-            return redirect(f'/')
+def search(request):
+    inp=request.GET.get('searchBox')
+    if inp:
+        project=Project.objects.filter(Q(title__icontains=inp))[:1]
+    else:
+        inp =' '
+    return showProject(request,project)  
 
 
 @login_required
@@ -180,6 +185,7 @@ def rate_project(request, id, value):
             'msg': "success"
         }
         return JsonResponse(data)
+
 
 def donate(request, id):
     if request.method == 'POST':

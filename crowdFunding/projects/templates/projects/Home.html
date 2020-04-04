@@ -11,21 +11,30 @@
 
     <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner" >
-        {% for p in latestFiveList %}
+        {% for p in hRProjects %}
             {% if forloop.counter == 1 %}
                 <div class="carousel-item slideCss active" >
+                      <a href="{% url 'show_proj' p.id %}">
                       <img src="/static/{{p.imgs.all.first.img_url}}" class="d-block slideCss">
+                      </a>
                       <div class="carousel-caption d-none d-md-block">
-                        <h5 class="sliderTitle">{{p.title}}  </h5>
+                      
+                        <h5 class="sliderTitle" >{{p.title}}  </h5>
+                        
                         <p class="sliderDesc"> {{p.details}}</p>
+                        
                       </div>
                 </div>
              {% else %}
                 <div class="carousel-item slideCss" >
+                <a href="{% url 'show_proj' p.id %}">
                       <img src="/static/{{p.imgs.all.first.img_url}}" class="d-block slideCss">
+                      </a>
                       <div class="carousel-caption d-none d-md-block">
+                    
                         <h5 class="sliderTitle">{{p.title}} </h5>
                         <p class="sliderDesc"> {{p.details}} </p>
+                    
                       </div>
                 </div>
             {% endif %}
@@ -93,7 +102,7 @@
         {% endfor %}
     </div>  
 
-    <h1 class="subTitle"> Categories </h1> 
+    <h1 class="subTitle"> Our Categories </h1> 
     <hr>
 
     <div class="row">
@@ -101,7 +110,7 @@
             <div class="categs">
                 <a href="{% url 'show_cate' c.id %}">
                 <img src="/static/{{ c.cat_icon }}" class="card-img-top"> </a>
-                <h5 class="card-title" style="margin-left:32%">{{c.name }}</h5>
+                <h5 class="card-title" style="text-align: center;">{{c.name }}</h5>
             </div>
         {% endfor %}
     </div>
