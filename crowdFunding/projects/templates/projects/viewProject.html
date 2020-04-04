@@ -98,25 +98,25 @@
             </ul>
 
       </div>
-
-      <div class="card text-center">
-            <form action={% url 'donate' pData.id %} method="POST" style="margin-left: 220; margin-top: 10;">
-                  <div class="donationbox">
-                        <div class="dollarsign">$</div>
-                        <input class="donationamount " name="donate" maxlength="6" tabindex="1" type="text"
-                              onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                              value="" required>
-                        {% csrf_token %}
-                        <input class="submit" type="submit" value="Donate Now">
-                  </div>
-            </form>
-      </div>
-
+      {% if today < start_date  %}
+            <h3 class="date_project_start"> Project Not Started Yet But , Come Again And Donate At {{start_date}} ❤️</h3> 
+      {% elif today > end_date %}
+            <h3 class="date_project_end"> Sorry , Project Donation Ended 😭😭 </h3>
+      {% else %}
+            <div class="card text-center">
+                  <form action={% url 'donate' pData.id %} method="POST" style="margin-left: 220; margin-top: 10;">
+                        <div class="donationbox">
+                              <div class="dollarsign">$</div>
+                              <input class="donationamount " name="donate" maxlength="6" tabindex="1" type="text"
+                                    onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                                    value="" required>
+                              {% csrf_token %}
+                              <input class="submit" type="submit" value="Donate Now">
+                        </div>
+                  </form>
+            </div>
+      {% endif %}
 </div>
-
-
-
-
 
 <hr>
 <h3>Comments</h3>
