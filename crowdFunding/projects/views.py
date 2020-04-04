@@ -1,28 +1,29 @@
 from .models import *
-import json , re
+import json
+import re
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ProjectsForm, ImageForm
-from django.http.response import HttpResponse, JsonResponse
+from django.http.response import HttpResponse, JsonResponse,HttpResponseForbidden
 from users.models import Profile
 from django.contrib.auth.models import User
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 from django.contrib import messages
-from django.db.models import Q,Avg,Sum
+from django.db.models import Q, Avg, Sum
 # Create your views here.
 from taggit.models import Tag
 from decimal import Decimal, ROUND_HALF_UP
 from django.template.loader import render_to_string
-from datetime import datetime 
+from datetime import datetime
+
 
 @login_required
-
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def showProject(request, id):
     item = Project.objects.get(id=id)
     pPics = ProjectPicture.objects.all().filter(project_id=id)
-    relatedProjects=Project.objects.all().filter(category_id=item.category)
+    relatedProjects = Project.objects.all().filter(category_id=item.category)
     rate = item.rate_set.all().aggregate(Avg("value"))["value__avg"]
     rate = rate if rate else 0
     rate = Decimal(rate).quantize(0, ROUND_HALF_UP)
@@ -38,14 +39,13 @@ def showProject(request, id):
     end_date = datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S")
     donate = item.donation_set.all().aggregate(Sum("amount"))
     context = {'pData': item,
-                'pPics': pPics,
-                'rate': rate,
-                'today' : today ,
-                'start_date' : start_date ,
-                'end_date' : end_date ,
-                'relatedProjs':relatedProjects,
-                'donations_amount': donate["amount__sum"] if donate["amount__sum"] else 0}
-
+               'pPics': pPics,
+               'rate': rate,
+               'today': today,
+               'start_date': start_date,
+               'end_date': end_date,
+               'relatedProjs': relatedProjects,
+               'donations_amount': donate["amount__sum"] if donate["amount__sum"] else 0}
 
     if request.user:
         user_rate = item.rate_set.filter(
@@ -105,35 +105,42 @@ def create(request):
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def create_comment(request, id):
     if request.method == 'POST':
-        comment = Comment()
-        comment.content = request.POST['content']
-        comment.project_id = id
-        comment.user = request.user.profile
-        comment.save()
+        if request.POST['content']:
+            comment = Comment()
+            comment.content = request.POST['content']
+            comment.project_id = id
+            comment.user = request.user.profile
+            comment.save()
         return redirect(f'/projects/projectDetails/{id}')
 
 
-def home(request):
-    projectRates= Rate.objects.all().values('project').annotate(Avg('value')).order_by('-value__avg')[:5]
-    print (projectRates)
+def list_categories(request):
+    categories = Category.objects.all()
+    return {
+        'categs': categories
+    }
 
-    hRatedProjects= []
+
+def home(request):
+    projectRates = Rate.objects.all().values('project').annotate(
+        Avg('value')).order_by('-value__avg')[:5]
+    print(projectRates)
+
+    hRatedProjects = []
     for p in projectRates:
         print(p.get('project'))
-        hRatedProjects.extend(list(Project.objects.filter(id=p.get('project'))))
-        print (hRatedProjects)
+        hRatedProjects.extend(
+            list(Project.objects.filter(id=p.get('project'))))
+        print(hRatedProjects)
 
     lFiveList = Project.objects.extra(order_by=['-created_at'])
-    categories = Category.objects.all()
     featuredList = Project.objects.all().filter(is_featured='True')
     context = {
         'latestFiveList': lFiveList,
-        'categs': categories,
         'fProject': featuredList,
-        'hRProjects':hRatedProjects,
+        'hRProjects': hRatedProjects,
     }
-    render(request, 'projects/base.html', {'categs': categories})
-    render(request, 'users/base.html', {'categs': categories})
+
     return render(request, 'projects/Home.html', context)
 
 
@@ -155,7 +162,7 @@ def report_project(request, id):
             project_id=id,
             user=request.user.profile
         )
-       
+
         return redirect(f'/projects/projectDetails/{id}')
 
 
@@ -173,12 +180,12 @@ def report_comment(request, id):
 
 
 def search(request):
-    inp=request.GET.get('searchBox')
+    inp = request.GET.get('searchBox')
     if inp:
-        project=Project.objects.filter(Q(title__icontains=inp))[:1]
+        project = Project.objects.filter(Q(title__icontains=inp))[:1]
     else:
-        inp =' '
-    return showProject(request,project)  
+        inp = ' '
+    return showProject(request, project)
 
 
 @login_required
@@ -202,7 +209,16 @@ def donate(request, id):
     if request.method == 'POST':
         donate = Donation.objects.create(
             amount=request.POST['donate'],
-            project_id = id ,
-            user = request.user.profile 
+            project_id=id,
+            user=request.user.profile
         )
         return redirect(f'/projects/projectDetails/{id}')
+
+def delete_project(request, id):
+    if request.method == 'POST':
+        project = get_object_or_404(Project,id=id)
+        if (request.user.profile.id != project.id):
+            raise HttpResponseForbidden("Not allowed")
+
+        project.delete()
+        return redirect(f'/users/profile/{request.user.profile.id}')

@@ -36,7 +36,7 @@
       height: 100px;
       line-height: 100px;
       width: 314px;
-      font-size: 70px;
+      font-size: 30px;
       color: #ffffff;
       border-top: 1px solid #E8E8E8;
       border-bottom: 1px solid #E8E8E8;
@@ -69,7 +69,7 @@ element.style {
     height: 100px;
     width: 58px;
     padding-left: 0px;
-    font-size: 70px;
+    font-size: 30px;
     color: #ffffff;
     border-top: 1px solid #E8E8E8;
     border-bottom: 1px solid #E8E8E8;
@@ -98,7 +98,7 @@ div {
     height: 100px;
     line-height: 100px;
     width: 314px;
-    font-size: 50px;
+    font-size: 30px;
     color: #ffffff;
     border-top: 1px solid #E8E8E8;
     border-bottom: 1px solid #E8E8E8;

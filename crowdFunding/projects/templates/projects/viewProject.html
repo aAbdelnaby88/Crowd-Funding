@@ -55,7 +55,11 @@
             <h2>{{pData.title }}</h2>
       </div>
       <div class="card-body">
-            <h3 class="card-text text-left"> {{ pData.details }}</h3>
+            <h3 style="font-weight: bold;" class="card-text text-left"> created by <a target="_blank"
+                        href="{% url 'users:profile' pData.user.id %}">{{ pData.user.user.username }}</a></h3>
+
+            <br>
+            <h1 class="card-text text-left"> {{ pData.details }}</h1>
             <h3 class="card-title"> ${{ donations_amount }} raised of ${{ pData.target }} </h3>
 
             <div style="width:auto" class="stars">
@@ -64,7 +68,8 @@
                   <form action="">
                         {% for i in '54321'|make_list %}
                         <input class="star star-{{i}}" id="star-{{i}}" type="radio" name="star"
-                            onchange="onRateChange({{ pData.id }},{{i}})" {% if i|add:"0" == user_rate %} checked {% endif %} />
+                              onchange="onRateChange({{ pData.id }},{{i}})" {% if i|add:"0" == user_rate %} checked
+                              {% endif %} />
                         <label class="star star-{{i}}" for="star-{{i}}"></label>
                         {% endfor%}
                   </form>
@@ -99,22 +104,22 @@
 
       </div>
       {% if today < start_date  %}
-            <h3 class="date_project_start"> Project Not Started Yet But , Come Again And Donate At {{start_date}} ❤️</h3> 
+      <h3 class="date_project_start"> Project Not Started Yet But , Come Again And Donate At {{start_date}} ❤️</h3>
       {% elif today > end_date %}
-            <h3 class="date_project_end"> Sorry , Project Donation Ended 😭😭 </h3>
+      <h3 class="date_project_end"> Sorry , Project Donation Ended 😭😭 </h3>
       {% else %}
-            <div class="card text-center">
-                  <form action={% url 'donate' pData.id %} method="POST" style="margin-left: 220; margin-top: 10;">
-                        <div class="donationbox">
-                              <div class="dollarsign">$</div>
-                              <input class="donationamount " name="donate" maxlength="6" tabindex="1" type="text"
-                                    onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                                    value="" required>
-                              {% csrf_token %}
-                              <input class="submit" type="submit" value="Donate Now">
-                        </div>
-                  </form>
-            </div>
+      <div class="card text-center">
+            <form action={% url 'donate' pData.id %} method="POST" style="margin-left: 220; margin-top: 10;">
+                  <div class="donationbox">
+                        <div class="dollarsign">$</div>
+                        <input class="donationamount " name="donate" maxlength="6" tabindex="1" type="text"
+                              onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                              value="" required>
+                        {% csrf_token %}
+                        <input class="submit" type="submit" value="Donate Now">
+                  </div>
+            </form>
+      </div>
       {% endif %}
 </div>
 
@@ -134,10 +139,12 @@
       <div class="card-body text-left">
             <div class="row">
                   <div class="col-md-10">
-                        <p><a class="float-left" href=""><strong>{{comment.user.user_name.username}}</strong>
-                              </a>
-                        </p>
+                        <h5>
+                              <a class="float-left" target="_blank"
+                                    href="{% url 'users:profile' pData.user.id %}"><strong>{{comment.user.user.username}}</strong></a>
+                        </h5>
                         <div class=" clearfix">
+
                         </div>
                         <p>{{comment.content}}</p>
 
@@ -171,7 +178,7 @@
                   Project</button>
       </div>
       <!-- Modal -->
-      <div  class="modal fade" id="myModal" role="dialog">
+      <div class="modal fade" id="myModal" role="dialog">
             <div class="modal-dialog">
                   <!-- Modal content-->
                   <div class="modal-content">
@@ -198,59 +205,59 @@
       </div>
 
 </div>
- <h1 class="subTitle"> Related Projects</h1> 
+<h1 class="subTitle"> Related Projects</h1>
 <hr>
 
-    <div class="row">
-        {% for p in relatedProjs %}
-            {% if forloop.counter < 5 %}
-                        {% if p != pData %}
-                              <div class="col-md-3 mt-4">
-                                 <div class="card cardDes">
-                                     <img src="/static/{{ p.imgs.all.first.img_url }}" class="card-img-top projImg">
-                                     <div class="card-body">
-                                       <h5 class="card-title">{{p.title }}</h5>
-                                       <p class="card-text desc">{{p.details }}</p>
-                                       <a href="{% url 'show_proj' p.id %}" class="btn btn-primary"> Show Details </a>
-                                     </div>
-                                 </div>
-                              </div>
-                       {% endif %}
-                 
-            {% endif %}
-        {% endfor %}
-    </div>
+<div class="row">
+      {% for p in relatedProjs %}
+      {% if forloop.counter < 5 %}
+      {% if p != pData %}
+      <div class="col-md-3 mt-4">
+            <div class="card cardDes">
+                  <img src="/static/{{ p.imgs.all.first.img_url }}" class="card-img-top projImg">
+                  <div class="card-body">
+                        <h5 class="card-title">{{p.title }}</h5>
+                        <p class="card-text desc">{{p.details }}</p>
+                        <a href="{% url 'show_proj' p.id %}" class="btn btn-primary"> Show Details </a>
+                  </div>
+            </div>
+      </div>
+      {% endif %}
+
+      {% endif %}
+      {% endfor %}
+</div>
 
 <script>
       function getCookie(name) {
-          var cookieValue = null;
-          if (document.cookie && document.cookie != '') {
-              var cookies = document.cookie.split(';');
-              for (var i = 0; i < cookies.length; i++) {
-                  var cookie = jQuery.trim(cookies[i]);
-                  // Does this cookie string begin with the name we want?
-                  if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                      break;
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                  var cookies = document.cookie.split(';');
+                  for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                              break;
+                        }
                   }
-              }
-          }
-          return cookieValue;
+            }
+            return cookieValue;
       }
-  
+
       onRateChange = (id, value) => {
-          $.ajax({
-              url: `/projects/${id}/rate/${value}`,
-              type: "POST",
-              beforeSend: function (request) {
-                  request.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-              },
-              dataType: 'json',
-              complete: function (data) {
-                  console.log(data)
-              }
-          });
+            $.ajax({
+                  url: `/projects/${id}/rate/${value}`,
+                  type: "POST",
+                  beforeSend: function (request) {
+                        request.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                  },
+                  dataType: 'json',
+                  complete: function (data) {
+                        console.log(data)
+                  }
+            });
       };
-  </script>
+</script>
 
 {% endblock %}

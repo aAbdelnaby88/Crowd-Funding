@@ -1,11 +1,11 @@
-from django.http import HttpResponse, HttpResponseRedirect , Http404
-from django.shortcuts import render , get_object_or_404, redirect
-from .forms import SignUpForm , UserUpdateForm, ProfileUpdateForm , UserDeleteForm
-from django.contrib.auth import  login , authenticate, logout
-from django.db.models import Avg
+from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.shortcuts import render, get_object_or_404, redirect
+from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm, UserDeleteForm
+from django.contrib.auth import login, authenticate, logout
+from django.db.models import Avg, Sum
 from django.contrib.auth.decorators import login_required
 from users.models import Profile
-from projects.models import Project , Category ,Donation, Rate
+from projects.models import Project, Category, Donation, Rate
 from decimal import Decimal, ROUND_HALF_UP
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -24,9 +24,10 @@ from django.core.mail import EmailMessage
 #     else:
 #         return login(request,**kwargs)
 
+
 def signup(request):
     if request.user.is_authenticated:
-       return redirect('/')
+        return redirect('/')
     else:
         if request.method == 'POST':
             form = SignUpForm(request.POST)
@@ -59,7 +60,7 @@ def activate_account(request, uidb64, token):
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
     if request.user.is_authenticated:
-       return redirect('/')
+        return redirect('/')
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
@@ -68,37 +69,36 @@ def activate_account(request, uidb64, token):
         return redirect('login')
     else:
         return HttpResponse('Activation link is invalid!')
+
+
 @login_required
 def userProfile(request, uid):
-   user2 = get_object_or_404(User, id=uid)
-   categories = Category.objects.all()
-   projects=Project.objects.all().filter(user_id=uid)
-   rates = []
-   for p in projects:
-        rate = p.rate_set.all().aggregate(Avg("value"))["value__avg"]
-        rate = rate if rate else 0
-        rate = Decimal(rate).quantize(0, ROUND_HALF_UP)
-        rates.append(rate)
-        print(rates)
+    user2 = get_object_or_404(User, id=uid)
+    categories = Category.objects.all()
+    projects = Project.objects.all().filter(user_id=uid)
+    for p in projects:
 
-   context ={
-       'userprofile': user2,
-       'userProject': Project.objects.all().filter(user_id = uid),
-       'categories': categories,
-       'donations': Donation.objects.all().filter(user_id = uid),
-       'latestFiveList': Project.objects.extra(order_by=['created_at']),
-       'rates': rates
-        }
-   print(Rate.objects.all().values('project').annotate(Avg('value')))
-   return render(request,"users/profile.html", context)
+        donation_sum = p.donation_set.all().aggregate(Sum("amount"))['amount__sum']
+        p.donation_sum = donation_sum if donation_sum else 0
+        p.delete_flag = True if p.donation_sum <= p.target * 0.25 else False
+
+    context = {
+        'userprofile': user2,
+        'userProject': projects,
+        'categories': categories,
+        'donations': Donation.objects.all().filter(user_id=uid),
+        'latestFiveList': Project.objects.extra(order_by=['created_at'])
+    }
+    return render(request, "users/profile.html", context)
+
 
 @login_required
 def editProfile(request, uid):
-   if request.user.profile.id != uid:
-       raise Http404("Not Found")
-   user2 = get_object_or_404(User, id=uid)
+    if request.user.profile.id != uid:
+        raise Http404("Not Found")
+    user2 = get_object_or_404(User, id=uid)
 
-   if request.method == 'POST':
+    if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=user2)
         p_form = ProfileUpdateForm(request.POST,
                                    request.FILES,
@@ -110,18 +110,17 @@ def editProfile(request, uid):
             messages.success(request, f'Your account has been updated!')
             return redirect('users:profile', uid=uid)
 
-   else:
+    else:
         u_form = UserUpdateForm(instance=user2)
         p_form = ProfileUpdateForm(instance=user2.profile)
-   context = {
+    context = {
         "userprofile": user2,
         # "categories": categories,
         'u_form': u_form,
         'p_form': p_form
     }
 
-   return render(request, "users/edit_profile.html", context)
-
+    return render(request, "users/edit_profile.html", context)
 
 
 @login_required
