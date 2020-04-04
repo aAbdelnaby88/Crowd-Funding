@@ -1,13 +1,12 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect , Http404
 from django.shortcuts import render , get_object_or_404, redirect
 from .forms import SignUpForm , UserUpdateForm, ProfileUpdateForm , UserDeleteForm
 from django.contrib.auth import  login , authenticate, logout
-<<<<<<< HEAD
+from django.db.models import Avg
 from django.contrib.auth.decorators import login_required
 from users.models import Profile
 from projects.models import Project , Category ,Donation, Rate
-=======
->>>>>>> 22cf40b2193bee3b875358af301f7e242a0685f6
+from decimal import Decimal, ROUND_HALF_UP
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
@@ -60,11 +59,18 @@ def activate_account(request, uidb64, token):
         return redirect('login')
     else:
         return HttpResponse('Activation link is invalid!')
-
+@login_required
 def userProfile(request, uid):
    user2 = get_object_or_404(User, id=uid)
    categories = Category.objects.all()
-
+   projects=Project.objects.all().filter(user_id=uid)
+   rates = []
+   for p in projects:
+        rate = p.rate_set.all().aggregate(Avg("value"))["value__avg"]
+        rate = rate if rate else 0
+        rate = Decimal(rate).quantize(0, ROUND_HALF_UP)
+        rates.append(rate)
+        print(rates)
 
    context ={
        'userprofile': user2,
@@ -72,16 +78,18 @@ def userProfile(request, uid):
        'categories': categories,
        'donations': Donation.objects.all().filter(user_id = uid),
        'latestFiveList': Project.objects.extra(order_by=['created_at']),
-       'rates': Rate.objects.all().filter(user_id=uid),
+       'rates': rates
         }
-
+   print(Rate.objects.all().values('project').annotate(Avg('value')))
    return render(request,"users/profile.html", context)
 
-
+@login_required
 def editProfile(request, uid):
-    user2 = get_object_or_404(User, id=uid)
-    # categories = Categories.objects.all()
-    if request.method == 'POST':
+   if request.user.profile.id != uid:
+       raise Http404("Not Found")
+   user2 = get_object_or_404(User, id=uid)
+
+   if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=user2)
         p_form = ProfileUpdateForm(request.POST,
                                    request.FILES,
@@ -93,21 +101,21 @@ def editProfile(request, uid):
             messages.success(request, f'Your account has been updated!')
             return redirect('users:profile', uid=uid)
 
-    else:
+   else:
         u_form = UserUpdateForm(instance=user2)
         p_form = ProfileUpdateForm(instance=user2.profile)
-    context = {
+   context = {
         "userprofile": user2,
         # "categories": categories,
         'u_form': u_form,
         'p_form': p_form
     }
 
-    return render(request, "users/edit_profile.html", context)
+   return render(request, "users/edit_profile.html", context)
 
 
 
-# @login_required
+@login_required
 def deleteuser(request, uid):
     user2 = get_object_or_404(User, id=uid)
     if request.method == 'POST':
