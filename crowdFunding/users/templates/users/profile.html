@@ -1,49 +1,158 @@
 {% extends 'users/base.html' %}
+{% load countries %}
+{% get_country 'BR' as country %}
 {% load crispy_forms_tags %}
+
 {% block content %}
   <main role="main" class="container mt-4">
     <div class="row">
       <div class="col-md-8">
 
                 <div class="content-section">
-                  <div class="media">
-                      {% if userprofile.profile.user_image %}
-                        <img src="{{ userprofile.profile.user_image.url }}" width="150" height="150" class="rounded-circle account-img">
-                      {% endif %}
+                       <div class="media">
+                            {% if userprofile.profile.user_image %}
+                               <img src="{{ userprofile.profile.user_image.url }}" width="150" height="150" class="rounded-circle account-img ml-4">
+                             {% endif %}
 
-                    <div class="media-body m-4">
-                      <h2 class="account-heading">{{userprofile.username}}</h2>
-                      <p class="text-secondary">
-                          {{userprofile.email}}
-                          <br>
-                          {{userprofile.profile.facebook}}
-                        </p>
-                    </div>
-                  </div>
-                  <!-- FORM HERE -->
- <div class="container">
-  {% comment %} {% if user.id == userprofile.id %} {% endcomment %}
-        {% block content1 %}
+                            <div class="media-body m-1 mt-4">
+                              <h4 class="account-heading">{{userprofile.first_name}}  {{userprofile.last_name}}</h4>
+                              <p class="text-secondary">
+                                  {{userprofile.email}}
+                              </p>
+                           </div>
+                       </div>
+                       <!-- FORM HERE -->
 
-           <br/><br/>
-           <p>content</p>
-         {% endblock %}
+                       <div class="container">
 
-</div>
+                             <!--  projects   -->
+                             <div class="card-deck">
+                             {% for p in userProject %}
 
-                </div>
-           </div>
+                                 <div class="col-md-6 mt-4">
+                                    <div class="card cardDes">
+                                     <a href="{% url 'show_proj' p.id %}">
+                                        <img src="/static/{{ p.imgs.all.first.img_url }}" class="card-img-top projImg"> </a>
+                                        <div class="card-body">
+                                          <h5 class="card-title mb-1">{{p.title }}</h5>
+                                            <p class="card-text mb-1">Category: <a href = "{% url 'show_cate' p.id %}" >{{ p.category }}</a><br/>
+                                                <span class="card-title "> {{ p.rate.value }}  </span>
+                                                {% for i in '01234'|make_list %}
+                                                    {% if p.rate.value >= forloop.counter %}
+                                                          <span class="fa fa-star checked "></span>
+                                                    {% else %}
+                                                          <span class="fa fa-star "></span>
+                                                    {% endif %}
+                                               {% endfor%}
+                                            </p>
+                                            <p class="card-text desc"> Details: {{p.details }}</p>
+
+                                        </div>
+                                    </div>
+                                 </div>
+
+                             {% endfor %}
+                             </div>
+                           <div>
+                            <h2 class="h1 mb-2 mt-4 text-center text-muted"  id="donations"> Donations </h2>
+                               </div>
+
+                             <div class="card-deck ">
+                               {% for p in donations %}
+                                  <div class="col-md-6 mt-4">
+                                            <div class="media shadow mb-2 bg-white rounded" style="height:80px;">
+                                                <div class="row ">
+                                                         <div class="col-sm-4">
+                                                            <a href="{% url 'show_proj' p.id %}">
+                                                             <img src="/static/{{ p.project.imgs.all.first.img_url }}" alt="John Doe" class="mr-3" style="width:70px; height: 80px;">
+                                                            </a>
+                                                         </div>
+                                                          <div class="col-sm-8">
+                                                              <div class="media-body mr-3 mt-2" >
+                                                                <h6>{{ p.project.title }}</h6>
+                                                                  Quantity: {{ p.amount }}$<br/>
+                                                              </div>
+                                                          </div>
+                                                    </div>
+                                              </div>
+                                         </div>
+                                 {% endfor %}
+                             </div>
+                       </div>
+                       <div>
+                            <h2 class="h1 mb-4 mt-4 text-center text-muted"  id="about"> Profile Info</h2>
+                       </div>
+                           <div class="card">
+
+                                  <div class="card-body">
+
+                                    <p class="card-text">
+
+
+                                        <ul class="list-unstyled">
+                                              <li class="py-3 pl-2 border-bottom bg-light">
+
+                                                  <span class="text-primary h3 mr-3"> <i class="fas fa-user "></i> User Name  :</span>
+                                                  <span class="h4 text-muted">{{userprofile.first_name}}  {{userprofile.last_name}}</span>
+                                              </li>
+
+                                              <li class="py-3 pl-2 border-bottom bg-light">
+                                                  <span class="text-success h3 mr-3"> <i class="fas fa-envelope"></i> Email :</span>
+                                                  <span class="h4 text-muted">{{ userprofile.email }}</span>
+                                              </li>
+                                              <li class="py-3 pl-2 border-bottom bg-light">
+                                                  <span class="text-info h3 mr-3"> <i class="fab fa-facebook-square"></i> FaceBook :</span>
+                                                  <span class="h4 text-muted">{{userprofile.profile.facebook|default_if_none:'-------'}}</span>
+                                              </li>
+                                              <li class="py-3 pl-2 border-bottom bg-light">
+                                                   <span class="text-warning h3 mr-3"> <i class="fas fa-city"></i> country :</span>
+                                                   <span class="h4 text-muted">{{userprofile.profile.country|default_if_none:'-------'}}</span>
+                                              </li>
+                                              <li class="py-3 pl-2 border-bottom bg-light">
+                                                  <span class="text-danger h3 mr-3"> <i class="fas fa-birthday-cake"></i> Birth Date :</span>
+                                                   <span class="h4 text-muted">{{userprofile.profile.birth_date|default_if_none:'-------'}}</span>
+                                              </li>
+
+                                              <li class="py-3 pl-2 border-bottom bg-light">
+                                                  <span class="text-secondary h3 mr-3"> <i class="fas fa-phone"></i> Phone :</span>
+                                                   <span class="h4 text-muted">{{userprofile.profile.phone|default_if_none:'-------'}}</span>
+                                              </li>
+
+                                         </ul>
+
+                                    </p>
+                                  </div>
+                            </div>
+                       </div>
+
+      </div>
       <div class="col-md-4">
         <div class="content-section">
           <h3>Options</h3>
           <p class='text-muted'>
             <ul class="list-group">
-              <li class="list-group-item list-group-item-light">Latest Projects</li>
-              <li class="list-group-item list-group-item-light">donations</li>
-              <li class="list-group-item list-group-item-light">Categories</li>
-               {% comment %} {% if user.id == userprofile.id %} {% endcomment %}
-              <li class="list-group-item list-group-item-light"><a href = "{% url 'users:edit' userprofile.id %}" >Edit Profile</a></li>
-             <li class="list-group-item list-group-item-light"><a href = "{% url 'users:delete' userprofile.id  %}" >Delete Profile</a></li>
+              <li class="list-group-item list-group-item-light">
+                  <div class="dropdown show">
+                          <a class="dropdown-toggle" data-hover="dropdown" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Latest Projects
+                          </a>
+
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                              {% for p in latestFiveList %}
+                                  {% if forloop.counter >= 1 %}
+                                   <a class="dropdown-item" href="{% url 'show_proj' p.id %}">{{ p.title }}</a>
+                                  {% endif %}
+                              {% endfor %}
+
+                          </div>
+                    </div>
+
+
+                </li>
+                <li class="list-group-item list-group-item-light"><a class= "sidebar" href="#donations">Donations</a></li>
+                  <li class="list-group-item list-group-item-light"><a class= "sidebar"  href="#about">About</a></li>
+                   {% comment %} {% if user.id == userprofile.id %} {% endcomment %}
+                  <li class="list-group-item list-group-item-light"><a class= "sidebar"  href = "{% url 'users:edit' userprofile.id %}" >Edit Profile</a></li>
 
 
             </ul>

@@ -6,6 +6,7 @@ from .forms import SignUpForm , UserUpdateForm, ProfileUpdateForm , UserDeleteFo
 from django.contrib.auth import  login , authenticate, logout
 from django.contrib.auth.decorators import login_required
 from users.models import Profile
+from projects.models import Project , Category ,Donation, Rate
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
@@ -70,11 +71,16 @@ def signup(request):
 
 def userProfile(request, uid):
    user2 = get_object_or_404(User, id=uid)
-    # categories = Categories.objects.all()
+   categories = Category.objects.all()
 
-   # if request.user.id == user2.id:
+
    context ={
-            'userprofile': user2
+       'userprofile': user2,
+       'userProject': Project.objects.all().filter(user_id = uid),
+       'categories': categories,
+       'donations': Donation.objects.all().filter(user_id = uid),
+       'latestFiveList': Project.objects.extra(order_by=['created_at']),
+       'rates': Rate.objects.all().filter(user_id=uid),
         }
 
    return render(request,"users/profile.html", context)
@@ -108,20 +114,6 @@ def editProfile(request, uid):
     return render(request, "users/edit_profile.html", context)
 
 
-# def deleteProfile(request , uid):
-#     user2 = request.user
-#     form = UserFormPassword(request.POST)
-#     if form.is_valid():
-#         print("wwww")
-#         user = authenticate(uid=user2.id, password=form.cleaned_data.get("password"))
-#         if user is not None:
-#             user.delete()
-#             messages.success(request, "Delete Account Sucess")
-#             return redirect("/projects/home")
-#         else:
-#             messages.error(request, "Enter Valid password ")
-#     messages.error(request, form.errors)
-#     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 # @login_required
 def deleteuser(request, uid):
@@ -130,7 +122,7 @@ def deleteuser(request, uid):
         delete_form = UserDeleteForm(request.POST, instance=user2)
         user2.delete()
         messages.info(request, 'Your account has been deleted.')
-        return redirect('/projects/home')
+        return redirect('/')
     else:
         delete_form = UserDeleteForm(instance=user2)
 

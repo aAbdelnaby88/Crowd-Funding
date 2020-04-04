@@ -76,3 +76,35 @@ a.article-title:hover {
 .account-heading {
   font-size: 2.5rem;
 }
+
+.desc {
+    max-lines: 1;
+    line-height: 16px;
+    max-height: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.projImg {
+    width: 70%;
+    height: 170px;
+}
+
+.dimg{
+       width: 40%;
+
+}
+.dbody{
+
+       width: 50%;
+       height: 50px;
+       font-size: 10px;
+}
+
+.dropdown:hover>.dropdown-menu {
+  display: block;
+  top: 100%;
+}
+.side{
+   color: #16222A;
+}

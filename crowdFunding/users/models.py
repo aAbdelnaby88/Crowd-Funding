@@ -20,10 +20,7 @@ class Profile(models.Model):
     user_image = models.ImageField(upload_to='images/users/', default='images/users/default.jpg')
 
     def __str__(self):
-        return f'{self.user.username} Profile'
-    #
-    # def save(self):
-    #     super().save()
+        return f'{self.user.username}'
 
         img = Image.open(self.user_image.path)
 
@@ -42,7 +39,3 @@ class Profile(models.Model):
     post_save.connect(create_profile, sender=User)
 
 
-    # def delete(self, *args, **kwargs):
-    #   # object is being removed from db, remove the file from storage first
-    #     self.user_image.delete()
-    #     return super(Profile, self).delete(*args, **kwargs)
